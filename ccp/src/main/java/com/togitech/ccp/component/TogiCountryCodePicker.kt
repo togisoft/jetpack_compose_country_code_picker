@@ -89,18 +89,3 @@ fun TogiCountryCodePicker(
 
     }
 }
-
-@Preview
-@Composable
-fun TogiCodePreview() {
-    MaterialTheme() {
-        val context = LocalContext.current
-        TogiCountryCodePicker(pickedCountry = {
-            Toast.makeText(
-                context,
-                "Selected Country ${it.countryPhoneCode}",
-                Toast.LENGTH_SHORT
-            ).show()
-        })
-    }
-}
