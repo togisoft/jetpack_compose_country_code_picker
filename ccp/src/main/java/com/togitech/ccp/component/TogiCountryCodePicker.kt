@@ -53,6 +53,7 @@ fun TogiCountryCodePicker(
         {
             OutlinedTextField(
                 modifier = modifier.fillMaxWidth(),
+
                 value = phoneNumber,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = focusedBorderColor,

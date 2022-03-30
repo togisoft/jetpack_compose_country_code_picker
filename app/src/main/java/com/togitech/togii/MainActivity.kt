@@ -27,14 +27,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             TogiiTheme {
                 val systemUiController = rememberSystemUiController()
-                val useDarkIcons = MaterialTheme.colors.isLight
                 systemUiController.setStatusBarColor(
                     color = MaterialTheme.colors.primary,
-                    useDarkIcons
+                    false
                 )
                 systemUiController.setSystemBarsColor(
                     color = MaterialTheme.colors.primary,
-                    useDarkIcons
+                    false
                 )
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = { TopAppBar(title = { Text(text = "Togisoft") }) }) {
