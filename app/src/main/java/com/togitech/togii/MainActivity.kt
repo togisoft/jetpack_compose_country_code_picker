@@ -83,7 +83,7 @@ class MainActivity : ComponentActivity() {
                 selectedItem = it.countryCode
             },
             defaultCountry = getLibCountries().single { it.countryCode == selectedItem },
-            showCountryCode = false
+            showCountryCode = false,
         )
 
     }
