@@ -43,6 +43,7 @@ If you are looking for Country Phone Code Picker for Jetpack Compose you can use
   
 ```kotlin
   // Without Country Phone Code
+  @Composable
   fun SelectCountryWithoutCountryCode() {
         var selectedCountry by rememberSaveable { mutableStateOf(getDefaultCountryCode(this)) }
         val phoneNumber = rememberSaveable { mutableStateOf("") }
