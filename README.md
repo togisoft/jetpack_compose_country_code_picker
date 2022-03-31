@@ -98,7 +98,7 @@ Step 2. Add the dependency
     
 <br>
 <div class="row">
-    <img src="screenshots/shot.gif" width="300"> 
+    <img src="screenshots/shot_screen.gif" width="300"> 
   <img src="screenshots/1.jpg" width="300"> 
   <img src="screenshots/2.jpg" width="300"> 
   <img src="screenshots/3.jpg" width="300"> 
