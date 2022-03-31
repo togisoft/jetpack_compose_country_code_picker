@@ -91,7 +91,7 @@ maven { url 'https://jitpack.io' }
 Step 2. Add the dependency
 ```
   dependencies {
-	     implementation 'com.github.togisoft:jetpack_compose_country_code_picker:1.0'
+	     implementation 'com.github.togisoft:jetpack_compose_country_code_picker:1.1'
 	}  
 ```    
     
