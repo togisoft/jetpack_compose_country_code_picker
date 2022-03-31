@@ -1,5 +1,6 @@
 package com.togitech.ccp.component
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -144,7 +145,6 @@ class TogiCodePicker {
                                             cursorColor = cursorColorSearch,
                                         )
                                     }
-
                                     LazyColumn {
                                         items(
                                             (if (searchValue.isEmpty()) {
@@ -192,6 +192,7 @@ class TogiCodePicker {
     }
 
 
+    @SuppressLint("ComposableNaming")
     @Composable
     private fun DialogSearchView(
         focusedBorderColor: Color = MaterialTheme.colors.primary,
