@@ -19,31 +19,48 @@ If you are looking for Country Phone Code Picker for Jetpack Compose you can use
 ```kotlin
   // With Country Phone Code
   @Composable
-  fun SelectCountry() {
-      var selectedItem by rememberSaveable { mutableStateOf(getDefaultCountry(context)) }
-      
-      TogiCountryCodePicker(
-          pickedCountry = { selectedItem = it.countryCode },
-          defaultCountry = getLibCountries().single { it.countryCode == selectedItem },
-          
+   fun SelectCountryWithCountryCode() {
+        var selectedCountry by rememberSaveable { mutableStateOf(getDefaultCountryCode(this)) }
+        val phoneNumber = rememberSaveable { mutableStateOf("") }
+        var defaultCountry by rememberSaveable { mutableStateOf(getDefaultCountry(this))}
+
+        TogiCountryCodePicker(
+            pickedCountry = {
+                selectedCountry = it.countryPhoneCode
+                defaultCountry = it.countryCode
+
+            },
+            defaultCountry = getLibCountries().single { it.countryCode == defaultCountry },
+            dialogAppBarTextColor = Color.Black,
+            dialogAppBarColor = Color.White,
+            text = phoneNumber.value,
+            onValueChange = { phoneNumber.value = it }
         )
-}
+
+    }
 ```
   
   
 ```kotlin
   // Without Country Phone Code
-  @Composable
-  fun SelectCountry() {
-      var selectedItem by rememberSaveable { mutableStateOf(getDefaultCountry(context)) }
-      
-      TogiCountryCodePicker(
-          pickedCountry = { selectedItem = it.countryCode },
-          defaultCountry = getLibCountries().single { it.countryCode == selectedItem },
-          showCountryCode = false,
-          
+  fun SelectCountryWithoutCountryCode() {
+        var selectedCountry by rememberSaveable { mutableStateOf(getDefaultCountryCode(this)) }
+        val phoneNumber = rememberSaveable { mutableStateOf("") }
+        var defaultCountry by rememberSaveable { mutableStateOf(getDefaultCountry(this))}
+
+        TogiCountryCodePicker(
+            pickedCountry = {
+                selectedCountry = it.countryPhoneCode
+                defaultCountry = it.countryCode
+            },
+            defaultCountry = getLibCountries().single { it.countryCode == defaultCountry},
+            showCountryCode = false,
+            text = phoneNumber.value,
+            onValueChange = { phoneNumber.value = it }
         )
-  }
+
+        Text(text = "Number with * : $selectedCountry${phoneNumber.value}")
+    }
 ```
   
   <h3><- ********* Extras ********* -></h3>
