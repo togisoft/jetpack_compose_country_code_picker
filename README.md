@@ -20,49 +20,68 @@ If you are looking for Country Phone Code Picker for Jetpack Compose you can use
   // With Country Phone Code
   @Composable
    fun SelectCountryWithCountryCode() {
-        var selectedCountry by rememberSaveable { mutableStateOf(getDefaultCountryCode(this)) }
+        val getDefaultLangCode = getDefaultLangCode() // Auto detect language
+        val getDefaultPhoneCode = getDefaultPhoneCode() // Auto detect phone code : +90
+        var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode) }
         val phoneNumber = rememberSaveable { mutableStateOf("") }
-        var defaultCountry by rememberSaveable { mutableStateOf(getDefaultCountry(this))}
+        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode) }
+        var verifyText by remember { mutableStateOf("") }
+        var isValidPhone by remember { mutableStateOf(true) }
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = verifyText,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center)
+            )
+            TogiCountryCodePicker(
+                pickedCountry = {
+                    phoneCode = it.countryPhoneCode
+                    defaultLang = it.countryCode
+                },
+                defaultCountry = getLibCountries().single { it.countryCode == defaultLang },
+                focusedBorderColor = MaterialTheme.colors.primary,
+                unfocusedBorderColor = MaterialTheme.colors.primary,
+                dialogAppBarTextColor = Color.Black,
+                dialogAppBarColor = Color.White,
+                error = isValidPhone,
+                text = phoneNumber.value,
+                onValueChange = { phoneNumber.value = it }
+            )
 
-        TogiCountryCodePicker(
-            pickedCountry = {
-                selectedCountry = it.countryPhoneCode
-                defaultCountry = it.countryCode
+            val fullPhoneNumber = "$phoneCode${phoneNumber.value}"
+            val checkPhoneNumber = checkPhoneNumber(
+                phone = phoneNumber.value,
+                fullPhoneNumber = fullPhoneNumber,
+                countryCode = defaultLang
+            )
+            Button(
+                onClick = {
+                    verifyText = if (checkPhoneNumber) {
+                        isValidPhone = true
+                        "Phone Number Correct"
+                    } else {
+                        isValidPhone = false
+                        "Phone Number is Wrong"
 
-            },
-            defaultCountry = getLibCountries().single { it.countryCode == defaultCountry },
-            dialogAppBarTextColor = Color.Black,
-            dialogAppBarColor = Color.White,
-            text = phoneNumber.value,
-            onValueChange = { phoneNumber.value = it }
-        )
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(16.dp)
+                    .height(60.dp)
+            ) {
+                Text(text = "Phone Verify")
+            }
+        }
+    }
 
     }
 ```
   
   
-```kotlin
-  // Without Country Phone Code
-  @Composable
-  fun SelectCountryWithoutCountryCode() {
-        var selectedCountry by rememberSaveable { mutableStateOf(getDefaultCountryCode(this)) }
-        val phoneNumber = rememberSaveable { mutableStateOf("") }
-        var defaultCountry by rememberSaveable { mutableStateOf(getDefaultCountry(this))}
-
-        TogiCountryCodePicker(
-            pickedCountry = {
-                selectedCountry = it.countryPhoneCode
-                defaultCountry = it.countryCode
-            },
-            defaultCountry = getLibCountries().single { it.countryCode == defaultCountry},
-            showCountryCode = false,
-            text = phoneNumber.value,
-            onValueChange = { phoneNumber.value = it }
-        )
-
-        Text(text = "Number with * : $selectedCountry${phoneNumber.value}")
-    }
-```
   
   <h3><- ********* Extras ********* -></h3>
   
@@ -99,6 +118,7 @@ Step 2. Add the dependency
     
 <br>
 <div class="row">
+	<img src="screenshots/error.gif" width="300"> 
     <img src="screenshots/shot_screen.gif" width="300"> 
   <img src="screenshots/1.jpg" width="300"> 
   <img src="screenshots/2.jpg" width="300"> 
