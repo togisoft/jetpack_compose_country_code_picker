@@ -1,6 +1,5 @@
 package com.togitech.ccp.component
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,7 +36,6 @@ import com.togitech.ccp.data.utils.getLibCountries
 import com.togitech.ccp.utils.searchCountry
 
 class TogiCodePicker {
-
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun TogiCodeDialog(
@@ -61,7 +59,7 @@ class TogiCodePicker {
 
         Card(
             modifier = modifier
-                .padding(3.dp)
+                .padding(2.dp)
                 .clickable { isOpenDialog = true }
         ) {
             Column(modifier = Modifier.padding(padding)) {
@@ -70,7 +68,7 @@ class TogiCodePicker {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        modifier = modifier.width(30.dp),
+                        modifier = modifier.width(34.dp),
                         painter = painterResource(
                             id = getFlags(
                                 isPickCountry.countryCode
@@ -92,7 +90,8 @@ class TogiCodePicker {
             if (isOpenDialog) {
                 Dialog(
                     onDismissRequest = { isOpenDialog = false },
-                    properties = DialogProperties(usePlatformDefaultWidth = false),
+                    properties = DialogProperties(
+                    usePlatformDefaultWidth = false),
                 ) {
                     Scaffold(
                         topBar = {
@@ -139,7 +138,7 @@ class TogiCodePicker {
                             ) {
                                 Column {
                                     if (isSearch) {
-                                        searchValue = DialogSearchView(
+                                        searchValue = dialogSearchView(
                                             focusedBorderColor = focusedBorderColorSearch,
                                             unfocusedBorderColor = unfocusedBorderColorSearch,
                                             cursorColor = cursorColorSearch,
@@ -192,9 +191,8 @@ class TogiCodePicker {
     }
 
 
-    @SuppressLint("ComposableNaming")
     @Composable
-    private fun DialogSearchView(
+    private fun dialogSearchView(
         focusedBorderColor: Color = MaterialTheme.colors.primary,
         unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
         cursorColor: Color = MaterialTheme.colors.primary,

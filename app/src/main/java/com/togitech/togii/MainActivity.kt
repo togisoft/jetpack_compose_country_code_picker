@@ -3,24 +3,22 @@ package com.togitech.togii
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.togitech.ccp.component.TogiCountryCodePicker
-import com.togitech.ccp.data.utils.getDefaultCountry
-import com.togitech.ccp.data.utils.getDefaultCountryCode
+import com.togitech.ccp.data.utils.checkPhoneNumber
+import com.togitech.ccp.data.utils.getDefaultLangCode
+import com.togitech.ccp.data.utils.getDefaultPhoneCode
 import com.togitech.ccp.data.utils.getLibCountries
 import com.togitech.togii.ui.theme.TogiiTheme
 
@@ -59,51 +57,67 @@ class MainActivity : ComponentActivity() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(text = "With Country Code")
             SelectCountryWithCountryCode()
-            Text(text = "Without Country Code")
-            SelectCountryWithoutCountryCode()
         }
     }
 
     @Composable
     fun SelectCountryWithCountryCode() {
-        var selectedCountry by rememberSaveable { mutableStateOf(getDefaultCountryCode(this)) }
+        val getDefaultLangCode = getDefaultLangCode()
+        val getDefaultPhoneCode = getDefaultPhoneCode()
+        var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode) }
         val phoneNumber = rememberSaveable { mutableStateOf("") }
-        var defaultCountry by rememberSaveable { mutableStateOf(getDefaultCountry(this))}
+        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode) }
+        var verifyText by remember { mutableStateOf("") }
+        var isValidPhone by remember { mutableStateOf(true) }
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = verifyText,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center)
+            )
+            TogiCountryCodePicker(
+                pickedCountry = {
+                    phoneCode = it.countryPhoneCode
+                    defaultLang = it.countryCode
+                },
+                defaultCountry = getLibCountries().single { it.countryCode == defaultLang },
+                focusedBorderColor = MaterialTheme.colors.primary,
+                unfocusedBorderColor = MaterialTheme.colors.primary,
+                dialogAppBarTextColor = Color.Black,
+                dialogAppBarColor = Color.White,
+                error = isValidPhone,
+                text = phoneNumber.value,
+                onValueChange = { phoneNumber.value = it }
+            )
 
-        TogiCountryCodePicker(
-            pickedCountry = {
-                selectedCountry = it.countryPhoneCode
-                defaultCountry = it.countryCode
+            val fullPhoneNumber = "$phoneCode${phoneNumber.value}"
+            val checkPhoneNumber = checkPhoneNumber(
+                phone = phoneNumber.value,
+                fullPhoneNumber = fullPhoneNumber,
+                countryCode = defaultLang
+            )
+            Button(
+                onClick = {
+                    verifyText = if (checkPhoneNumber) {
+                        isValidPhone = true
+                        "Phone Number Correct"
+                    } else {
+                        isValidPhone = false
+                        "Phone Number is Wrong"
 
-            },
-            defaultCountry = getLibCountries().single { it.countryCode == defaultCountry },
-            dialogAppBarTextColor = Color.Black,
-            dialogAppBarColor = Color.White,
-            text = phoneNumber.value,
-            onValueChange = { phoneNumber.value = it }
-        )
-
-    }
-
-    @Composable
-    fun SelectCountryWithoutCountryCode() {
-        var selectedCountry by rememberSaveable { mutableStateOf(getDefaultCountryCode(this)) }
-        val phoneNumber = rememberSaveable { mutableStateOf("") }
-        var defaultCountry by rememberSaveable { mutableStateOf(getDefaultCountry(this))}
-
-        TogiCountryCodePicker(
-            pickedCountry = {
-                selectedCountry = it.countryPhoneCode
-                defaultCountry = it.countryCode
-            },
-            defaultCountry = getLibCountries().single { it.countryCode == defaultCountry},
-            showCountryCode = false,
-            text = phoneNumber.value,
-            onValueChange = { phoneNumber.value = it }
-        )
-
-        Text(text = "Number with * : $selectedCountry${phoneNumber.value}")
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(16.dp)
+                    .height(60.dp)
+            ) {
+                Text(text = "Phone Verify")
+            }
+        }
     }
 }
