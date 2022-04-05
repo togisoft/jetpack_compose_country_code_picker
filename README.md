@@ -12,10 +12,19 @@ If you are looking for Country Phone Code Picker for Jetpack Compose you can use
 * Can Customize
 * Adding language translations
 
+Languages:
 
-<h3> <-******* Usage *******-> </h3>
-  
-  
+* Turkish
+* English
+* Italian
+
+New features will be added every day. This project is open source without any profit motive.
+
+For language support, you can translate the file below and send it to me.
+https://github.com/togisoft/jetpack_compose_country_code_picker/blob/master/ccp/src/main/res/values/strings.xml
+
+<h3> Usage Example </h3>
+    
 ```kotlin
   // With Country Phone Code
   @Composable
@@ -80,8 +89,30 @@ If you are looking for Country Phone Code Picker for Jetpack Compose you can use
 
     }
 ```
+	
+<h3> Rounded Field Usage </h3>
+
+```kotlin
+        val getDefaultLangCode = getDefaultLangCode()
+        val getDefaultPhoneCode = getDefaultPhoneCode()
+        var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode) }
+        val phoneNumber = rememberSaveable { mutableStateOf("") }
+        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode) }
+        var isValidPhone by remember { mutableStateOf(true) }	
+	
+	 TogiRoundedPicker(
+            value = phoneNumber.value,
+            onValueChange = { phoneNumber.value = it },
+            defaultCountry = getLibCountries().single { it.countryCode == defaultLang },
+            pickedCountry = {
+                phoneCode = it.countryPhoneCode
+                defaultLang = it.countryCode
+            },
+            error = isValidPhone
+        )
+	
   
-  
+```  
   
   <h3><- ********* Extras ********* -></h3>
   
@@ -119,8 +150,9 @@ Step 2. Add the dependency
     
 <br>
 <div class="row">
-	<img src="screenshots/error.gif" width="300"> 
-    <img src="screenshots/shot_screen.gif" width="300"> 
+  <img src="screenshots/outlined.gif" width="300"> 
+  <img src="screenshots/error.gif" width="300"> 
+  <img src="screenshots/shot_screen.gif" width="300"> 
   <img src="screenshots/1.jpg" width="300"> 
   <img src="screenshots/2.jpg" width="300"> 
   <img src="screenshots/3.jpg" width="300"> 
