@@ -12,10 +12,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.togitech.ccp.component.TogiCountryCodePicker
+import com.togitech.ccp.component.TogiRoundedPicker
 import com.togitech.ccp.data.utils.checkPhoneNumber
 import com.togitech.ccp.data.utils.getDefaultLangCode
 import com.togitech.ccp.data.utils.getDefaultPhoneCode
@@ -58,6 +58,8 @@ class MainActivity : ComponentActivity() {
         ) {
 
             SelectCountryWithCountryCode()
+            RoundedPicker()
+
         }
     }
 
@@ -73,13 +75,7 @@ class MainActivity : ComponentActivity() {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(
-                text = verifyText,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
-            )
+
             TogiCountryCodePicker(
                 pickedCountry = {
                     phoneCode = it.countryPhoneCode
@@ -101,23 +97,63 @@ class MainActivity : ComponentActivity() {
                 fullPhoneNumber = fullPhoneNumber,
                 countryCode = defaultLang
             )
-            Button(
+            OutlinedButton(
                 onClick = {
-                    verifyText = if (checkPhoneNumber) {
-                        isValidPhone = true
-                        "Phone Number Correct"
-                    } else {
-                        isValidPhone = false
-                        "Phone Number is Wrong"
-
-                    }
+                    isValidPhone = checkPhoneNumber
                 },
-                modifier = Modifier.fillMaxWidth()
-                    .padding(16.dp)
-                    .height(60.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(
+                        50.dp
+                    )
             ) {
                 Text(text = "Phone Verify")
             }
+        }
+    }
+}
+
+
+@Composable
+private fun RoundedPicker() {
+    Column(
+        modifier = Modifier.padding(16.dp)
+    ) {
+        val getDefaultLangCode = getDefaultLangCode()
+        val getDefaultPhoneCode = getDefaultPhoneCode()
+        var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode) }
+        val phoneNumber = rememberSaveable { mutableStateOf("") }
+        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode) }
+        var isValidPhone by remember { mutableStateOf(true) }
+        val fullPhoneNumber = "$phoneCode${phoneNumber.value}"
+
+        val checkPhoneNumber = checkPhoneNumber(
+            phone = phoneNumber.value,
+            fullPhoneNumber = fullPhoneNumber,
+            countryCode = defaultLang
+        )
+
+        TogiRoundedPicker(
+            value = phoneNumber.value,
+            onValueChange = { phoneNumber.value = it },
+            defaultCountry = getLibCountries().single { it.countryCode == defaultLang },
+            pickedCountry = {
+                phoneCode = it.countryPhoneCode
+                defaultLang = it.countryCode
+            },
+            error = isValidPhone
+        )
+
+        OutlinedButton(
+            onClick = { isValidPhone = checkPhoneNumber }, modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .height(
+                    50.dp
+                )
+        ) {
+            Text(text = "Verify Phone Number")
         }
     }
 }

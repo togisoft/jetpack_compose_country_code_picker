@@ -3,6 +3,7 @@ package com.togitech.ccp.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -56,129 +57,132 @@ class TogiCodePicker {
         var searchValue by remember { mutableStateOf("") }
         var isSearch by remember { mutableStateOf(false) }
         val context = LocalContext.current
+        val interactionSource = remember { MutableInteractionSource() }
 
-        Card(
-            modifier = modifier
-                .padding(2.dp)
-                .clickable { isOpenDialog = true }
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null
+                ) { isOpenDialog = true },
         ) {
-            Column(modifier = Modifier.padding(padding)) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Image(
-                        modifier = modifier.width(34.dp),
-                        painter = painterResource(
-                            id = getFlags(
-                                isPickCountry.countryCode
-                            )
-                        ), contentDescription = null
-                    )
-                    if (showCountryCode) {
-                        Text(
-                            text = isPickCountry.countryPhoneCode,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(start = 6.dp)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    modifier = modifier.width(34.dp),
+                    painter = painterResource(
+                        id = getFlags(
+                            isPickCountry.countryCode
                         )
-                        Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
-                    }
+                    ), contentDescription = null
+                )
+                if (showCountryCode) {
+                    Text(
+                        text = isPickCountry.countryPhoneCode,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(start = 6.dp)
+                    )
+                    Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
                 }
             }
+        }
 
-            //Select Country Dialog
-            if (isOpenDialog) {
-                Dialog(
-                    onDismissRequest = { isOpenDialog = false },
-                    properties = DialogProperties(
-                    usePlatformDefaultWidth = false),
-                ) {
-                    Scaffold(
-                        topBar = {
-                            TopAppBar(
-                                title = {
-                                    Text(
-                                        text = stringResource(id = R.string.select_country),
-                                        textAlign = TextAlign.Center,
-                                        modifier = modifier.fillMaxWidth()
+        //Select Country Dialog
+        if (isOpenDialog) {
+            Dialog(
+                onDismissRequest = { isOpenDialog = false },
+                properties = DialogProperties(
+                usePlatformDefaultWidth = false
+                ),
+            ) {
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(
+                                    text = stringResource(id = R.string.select_country),
+                                    textAlign = TextAlign.Center,
+                                    modifier = modifier.fillMaxWidth()
+                                )
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = {
+                                    isOpenDialog = false
+                                    isSearch = false
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.ArrowBack,
+                                        contentDescription = "Back"
                                     )
-                                },
-                                navigationIcon = {
-                                    IconButton(onClick = {
-                                        isOpenDialog = false
-                                        isSearch = false
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.ArrowBack,
-                                            contentDescription = "Back"
-                                        )
-                                    }
-                                },
-                                backgroundColor = dialogAppBarColor,
-                                contentColor = dialogAppBarTextColor,
-                                actions = {
-                                    IconButton(onClick = {
-                                        isSearch = !isSearch
-                                    }) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.Search,
-                                            contentDescription = "Search"
-                                        )
-                                    }
                                 }
-                            )
-                        }
-                    ) {
-                        Surface(modifier = modifier.fillMaxSize()) {
-                            Card(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .fillMaxHeight(),
-                                elevation = 4.dp,
-                            ) {
-                                Column {
-                                    if (isSearch) {
-                                        searchValue = dialogSearchView(
-                                            focusedBorderColor = focusedBorderColorSearch,
-                                            unfocusedBorderColor = unfocusedBorderColorSearch,
-                                            cursorColor = cursorColorSearch,
-                                        )
-                                    }
-                                    LazyColumn {
-                                        items(
-                                            (if (searchValue.isEmpty()) {
-                                                countryList
-                                            } else {
-                                                countryList.searchCountry(
-                                                    searchValue,
-                                                    context = context
+                            },
+                            backgroundColor = dialogAppBarColor,
+                            contentColor = dialogAppBarTextColor,
+                            actions = {
+                                IconButton(onClick = {
+                                    isSearch = !isSearch
+                                }) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Search,
+                                        contentDescription = "Search"
+                                    )
+                                }
+                            }
+                        )
+                    }
+                ) {
+                    Surface(modifier = modifier.fillMaxSize()) {
+                        Card(
+                            Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(),
+                            elevation = 4.dp,
+                        ) {
+                            Column {
+                                if (isSearch) {
+                                    searchValue = dialogSearchView(
+                                        focusedBorderColor = focusedBorderColorSearch,
+                                        unfocusedBorderColor = unfocusedBorderColorSearch,
+                                        cursorColor = cursorColorSearch,
+                                    )
+                                }
+                                LazyColumn {
+                                    items(
+                                        (if (searchValue.isEmpty()) {
+                                            countryList
+                                        } else {
+                                            countryList.searchCountry(
+                                                searchValue,
+                                                context = context
+                                            )
+                                        })
+                                    ) { countryItem ->
+                                        Row(
+                                            Modifier
+                                                .padding(
+                                                    horizontal = 18.dp,
+                                                    vertical = 18.dp
                                                 )
-                                            })
-                                        ) { countryItem ->
-                                            Row(
-                                                Modifier
-                                                    .padding(
-                                                        horizontal = 18.dp,
-                                                        vertical = 18.dp
+                                                .clickable {
+                                                    pickedCountry(countryItem)
+                                                    isPickCountry = countryItem
+                                                    isOpenDialog = false
+                                                }) {
+                                            Image(
+                                                modifier = modifier.width(30.dp),
+                                                painter = painterResource(
+                                                    id = getFlags(
+                                                        countryItem.countryCode
                                                     )
-                                                    .clickable {
-                                                        pickedCountry(countryItem)
-                                                        isPickCountry = countryItem
-                                                        isOpenDialog = false
-                                                    }) {
-                                                Image(
-                                                    modifier = modifier.width(30.dp),
-                                                    painter = painterResource(
-                                                        id = getFlags(
-                                                            countryItem.countryCode
-                                                        )
-                                                    ), contentDescription = null
-                                                )
-                                                Text(
-                                                    stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
-                                                    Modifier.padding(horizontal = 18.dp)
-                                                )
-                                            }
+                                                ), contentDescription = null
+                                            )
+                                            Text(
+                                                stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
+                                                Modifier.padding(horizontal = 18.dp)
+                                            )
                                         }
                                     }
                                 }
@@ -189,7 +193,6 @@ class TogiCodePicker {
             }
         }
     }
-
 
     @Composable
     private fun dialogSearchView(
