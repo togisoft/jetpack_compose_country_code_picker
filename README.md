@@ -97,7 +97,7 @@ https://github.com/togisoft/jetpack_compose_country_code_picker/blob/master/ccp/
         val getDefaultPhoneCode = getDefaultPhoneCode()
         var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode) }
         val phoneNumber = rememberSaveable { mutableStateOf("") }
-        var defaultLang = rememberSaveable { mutableStateOf(getDefaultLangCode) }
+        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode) }
         var isValidPhone by remember { mutableStateOf(true) }	
 	
 	 TogiRoundedPicker(
