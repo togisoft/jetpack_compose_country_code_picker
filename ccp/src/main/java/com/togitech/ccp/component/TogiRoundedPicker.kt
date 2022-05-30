@@ -40,13 +40,10 @@ fun TogiRoundedPicker(
     focusedBorderColor: Color = MaterialTheme.colors.primary,
     unFocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
     cursorColor: Color = MaterialTheme.colors.primary,
-    focusedBorderColorSearch: Color = Color.Transparent,
-    unFocusedBorderColorSearch: Color = Color.Transparent,
-    cursorColorSearch: Color = MaterialTheme.colors.primary,
     dialogAppBarColor: Color = MaterialTheme.colors.primary,
     dialogAppBarTextColor: Color = Color.White,
     error: Boolean,
-    rowPadding: Modifier = modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+    rowPadding: Modifier = modifier.padding(vertical = 16.dp, horizontal = 3.dp)
 ) {
     var textFieldValueState by remember { mutableStateOf(TextFieldValue(text = value)) }
     val textFieldValue = textFieldValueState.copy(text = value)
@@ -100,12 +97,8 @@ fun TogiRoundedPicker(
                                     defaultSelectedCountry = defaultCountry,
                                     dialogAppBarColor = dialogAppBarColor,
                                     dialogAppBarTextColor = dialogAppBarTextColor,
-                                    showCountryCode = showCountryCode,
-                                    focusedBorderColorSearch = focusedBorderColorSearch,
-                                    unfocusedBorderColorSearch = unFocusedBorderColorSearch,
-                                    cursorColorSearch = cursorColorSearch,
-
-                                    )
+                                    showCountryCode = showCountryCode
+                                )
                             }
                         }
                     }

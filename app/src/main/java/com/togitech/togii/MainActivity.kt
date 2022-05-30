@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.togitech.ccp.component.TogiCountryCodePicker
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
                 )
                 Scaffold(modifier = Modifier.fillMaxSize(),
                     topBar = { TopAppBar(title = { Text(text = "Togisoft") }) }) {
+                    it.calculateTopPadding()
                     Surface(modifier = Modifier.fillMaxSize()) {
                         SelectCountryBody()
                     }
@@ -65,12 +67,10 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun SelectCountryWithCountryCode() {
-        val getDefaultLangCode = getDefaultLangCode()
-        val getDefaultPhoneCode = getDefaultPhoneCode()
-        var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode) }
+        val context = LocalContext.current
+        var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode(context)) }
         val phoneNumber = rememberSaveable { mutableStateOf("") }
-        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode) }
-        var verifyText by remember { mutableStateOf("") }
+        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode(context)) }
         var isValidPhone by remember { mutableStateOf(true) }
         Column(
             modifier = Modifier.padding(16.dp)
@@ -117,14 +117,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun RoundedPicker() {
+    val context = LocalContext.current
+
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val getDefaultLangCode = getDefaultLangCode()
-        val getDefaultPhoneCode = getDefaultPhoneCode()
-        var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode) }
+
+        var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode(context)) }
         val phoneNumber = rememberSaveable { mutableStateOf("") }
-        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode) }
+        var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode(context)) }
         var isValidPhone by remember { mutableStateOf(true) }
         val fullPhoneNumber = "$phoneCode${phoneNumber.value}"
 
@@ -140,7 +142,7 @@ private fun RoundedPicker() {
             defaultCountry = getLibCountries().single { it.countryCode == defaultLang },
             pickedCountry = {
                 phoneCode = it.countryPhoneCode
-                defaultLang = it.countryCode
+                defaultLang = it.countryCode.ifBlank { "tr" }
             },
             error = isValidPhone
         )
@@ -148,7 +150,7 @@ private fun RoundedPicker() {
         OutlinedButton(
             onClick = { isValidPhone = checkPhoneNumber }, modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp, vertical = 16.dp)
                 .height(
                     50.dp
                 )

@@ -1,6 +1,5 @@
 package com.togitech.ccp.data.utils
 
-import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
 
 fun getLibCountries(): List<CountryData> {

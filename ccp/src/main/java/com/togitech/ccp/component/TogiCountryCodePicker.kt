@@ -33,9 +33,6 @@ fun TogiCountryCodePicker(
     focusedBorderColor: Color = MaterialTheme.colors.primary,
     unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
     cursorColor: Color = MaterialTheme.colors.primary,
-    focusedBorderColorSearch: Color = Color.Transparent,
-    unfocusedBorderColorSearch: Color = Color.Transparent,
-    cursorColorSearch: Color = MaterialTheme.colors.primary,
     dialogAppBarColor: Color = MaterialTheme.colors.primary,
     dialogAppBarTextColor: Color = Color.White,
     error: Boolean,
@@ -88,9 +85,6 @@ fun TogiCountryCodePicker(
                                     defaultSelectedCountry = defaultCountry,
                                     dialogAppBarColor = dialogAppBarColor,
                                     showCountryCode = showCountryCode,
-                                    focusedBorderColorSearch = focusedBorderColorSearch,
-                                    unfocusedBorderColorSearch = unfocusedBorderColorSearch,
-                                    cursorColorSearch = cursorColorSearch,
                                     dialogAppBarTextColor = dialogAppBarTextColor
                                 )
                             }

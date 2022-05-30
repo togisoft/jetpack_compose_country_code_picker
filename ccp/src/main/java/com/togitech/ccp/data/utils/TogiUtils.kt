@@ -2,27 +2,23 @@ package com.togitech.ccp.data.utils
 
 import android.content.Context
 import android.telephony.TelephonyManager
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.intl.Locale
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.togitech.ccp.data.CountryData
 
-@Composable
-fun getDefaultLangCode(): String {
+fun getDefaultLangCode(context: Context): String {
     val localeCode: TelephonyManager =
-        LocalContext.current.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
     val countryCode = localeCode.networkCountryIso
     val defaultLocale = Locale.current.language
-    return countryCode.ifEmpty { defaultLocale }
+    return countryCode.ifBlank { defaultLocale }
 }
 
-@Composable
-fun getDefaultPhoneCode(): String {
-    val defaultCountry = getDefaultLangCode()
+fun getDefaultPhoneCode(context: Context): String {
+    val defaultCountry = getDefaultLangCode(context)
     val defaultCode: CountryData = getLibCountries().first() { it.countryCode == defaultCountry }
-    return defaultCode.countryPhoneCode
+    return defaultCode.countryPhoneCode.ifBlank { "+90" }
 }
 
 fun checkPhoneNumber(phone: String, fullPhoneNumber: String, countryCode: String): Boolean {

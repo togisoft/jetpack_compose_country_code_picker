@@ -7,6 +7,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -17,7 +19,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -47,9 +51,6 @@ class TogiCodePicker {
         pickedCountry: (CountryData) -> Unit,
         dialogAppBarColor: Color = MaterialTheme.colors.primary,
         dialogAppBarTextColor: Color = Color.White,
-        focusedBorderColorSearch: Color = MaterialTheme.colors.primary,
-        unfocusedBorderColorSearch: Color = MaterialTheme.colors.onSecondary,
-        cursorColorSearch: Color = MaterialTheme.colors.primary,
     ) {
         val countryList: List<CountryData> = getLibCountries()
         var isPickCountry by remember { mutableStateOf(defaultSelectedCountry) }
@@ -95,22 +96,47 @@ class TogiCodePicker {
             Dialog(
                 onDismissRequest = { isOpenDialog = false },
                 properties = DialogProperties(
-                usePlatformDefaultWidth = false
+                    usePlatformDefaultWidth = false
                 ),
             ) {
                 Scaffold(
                     topBar = {
                         TopAppBar(
                             title = {
-                                Text(
-                                    text = stringResource(id = R.string.select_country),
-                                    textAlign = TextAlign.Center,
-                                    modifier = modifier.fillMaxWidth()
-                                )
+                                if (!isSearch) {
+                                    Text(
+                                        text = stringResource(id = R.string.select_country),
+                                        textAlign = TextAlign.Center,
+                                        modifier = modifier.fillMaxWidth()
+                                    )
+                                } else {
+                                    SearchTextField(
+                                        value = searchValue,
+                                        onValueChange = { searchValue = it },
+                                        textColor = dialogAppBarTextColor,
+                                        leadingIcon = {
+                                            Icon(
+                                                Icons.Filled.Search,
+                                                null,
+                                                tint = dialogAppBarTextColor,
+                                                modifier = Modifier.padding(horizontal = 3.dp),
+                                            )
+                                        },
+                                        trailingIcon = null,
+                                        modifier = Modifier
+                                            .background(
+                                                dialogAppBarColor.copy(0.6f),
+                                            )
+                                            .clip(RoundedCornerShape(50))
+                                            .height(40.dp),
+                                        fontSize = 16.sp,
+                                    )
+                                }
                             },
                             navigationIcon = {
                                 IconButton(onClick = {
                                     isOpenDialog = false
+                                    searchValue = ""
                                     isSearch = false
                                 }) {
                                     Icon(
@@ -134,6 +160,7 @@ class TogiCodePicker {
                         )
                     }
                 ) {
+                    it.calculateTopPadding()
                     Surface(modifier = modifier.fillMaxSize()) {
                         Card(
                             Modifier
@@ -142,13 +169,6 @@ class TogiCodePicker {
                             elevation = 4.dp,
                         ) {
                             Column {
-                                if (isSearch) {
-                                    searchValue = dialogSearchView(
-                                        focusedBorderColor = focusedBorderColorSearch,
-                                        unfocusedBorderColor = unfocusedBorderColorSearch,
-                                        cursorColor = cursorColorSearch,
-                                    )
-                                }
                                 LazyColumn {
                                     items(
                                         (if (searchValue.isEmpty()) {
@@ -166,11 +186,17 @@ class TogiCodePicker {
                                                     horizontal = 18.dp,
                                                     vertical = 18.dp
                                                 )
+                                                .fillMaxWidth()
                                                 .clickable {
                                                     pickedCountry(countryItem)
                                                     isPickCountry = countryItem
                                                     isOpenDialog = false
-                                                }) {
+                                                    searchValue = ""
+                                                    isSearch = false
+                                                },
+                                            horizontalArrangement = Arrangement.Start,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
                                             Image(
                                                 modifier = modifier.width(30.dp),
                                                 painter = painterResource(
@@ -195,86 +221,49 @@ class TogiCodePicker {
     }
 
     @Composable
-    private fun dialogSearchView(
-        focusedBorderColor: Color = MaterialTheme.colors.primary,
-        unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
-        cursorColor: Color = MaterialTheme.colors.primary,
-    ): String {
-        var searchVal by remember { mutableStateOf("") }
-        Row {
-            SearchTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(5.dp),
-                value = searchVal, onValueChange = { searchVal = it },
-                fontSize = 14.sp,
-                hint = stringResource(id = R.string.search),
-                textAlign = TextAlign.Start,
-                focusedBorderColor = focusedBorderColor,
-                unfocusedBorderColor = unfocusedBorderColor,
-                cursorColor = cursorColor
-
-            )
-        }
-        return searchVal
-    }
-
-
-    @Composable
     private fun SearchTextField(
         modifier: Modifier = Modifier,
+        leadingIcon: (@Composable () -> Unit)? = null,
+        trailingIcon: (@Composable () -> Unit)? = null,
         value: String,
+        textColor: Color = Color.Black,
         onValueChange: (String) -> Unit,
-        hint: String = "",
-        fontSize: TextUnit = 16.sp,
-        textAlign: TextAlign = TextAlign.Center,
-        focusedBorderColor: Color = MaterialTheme.colors.primary,
-        unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
-        cursorColor: Color = MaterialTheme.colors.primary,
+        hint: String = stringResource(id = R.string.search),
+        fontSize: TextUnit = MaterialTheme.typography.body2.fontSize
     ) {
-        Box(
-            modifier = modifier
-                .background(
-                    color = Color.White.copy(alpha = 0.1f)
-                )
-        ) {
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                value = value,
-                onValueChange = onValueChange,
-                textStyle = LocalTextStyle.current.copy(
-                    textAlign = textAlign,
-                    fontSize = fontSize
-                ),
-                singleLine = true,
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Search,
-                        contentDescription = null,
-                        tint = Color.Black.copy(0.2f)
-                    )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.Transparent,
-                    focusedIndicatorColor = focusedBorderColor,
-                    disabledIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = unfocusedBorderColor,
-                    cursorColor = cursorColor,
-                )
+        BasicTextField(modifier = modifier
+            .background(
+                MaterialTheme.colors.surface,
+                MaterialTheme.shapes.small,
             )
-            if (value.isEmpty()) {
-                Text(
-                    text = hint,
-                    style = MaterialTheme.typography.body1,
-                    color = Color.Gray,
-                    modifier = Modifier.then(
-                        Modifier
-                            .align(Alignment.CenterStart)
-                            .padding(start = 52.dp)
-                    )
-                )
+            .fillMaxWidth(),
+            value = value,
+            onValueChange = onValueChange,
+            singleLine = true,
+            cursorBrush = SolidColor(MaterialTheme.colors.primary),
+            textStyle = LocalTextStyle.current.copy(
+                color = textColor,
+                fontSize = fontSize
+            ),
+            decorationBox = { innerTextField ->
+                Row(
+                    modifier,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (leadingIcon != null) leadingIcon()
+                    Box(Modifier.weight(1f)) {
+                        if (value.isEmpty()) Text(
+                            hint,
+                            style = LocalTextStyle.current.copy(
+                                color = textColor,
+                                fontSize = fontSize
+                            )
+                        )
+                        innerTextField()
+                    }
+                    if (trailingIcon != null) trailingIcon()
+                }
             }
-        }
+        )
     }
 }
