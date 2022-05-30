@@ -131,9 +131,6 @@ fun SelectCountryWithCountryCode() {
 * focusedBorderColor = TextField Border Color
 * unfocusedBorderColor = TextField Unfocused Border Color
 * cursorColor = TextField Cursor Color
-* focusedBorderColorSearch = SearchField Border Color
-* unfocusedBorderColorSearch = SearchField Unfocused Border Color
-* cursorColorSearch = SearchFiled Cursor Color
 * dialogAppBarColor = Dialog Top App Bar Background Color
 * dialogAppBarTextColor = Dialog Top App Bar Text Color
 
