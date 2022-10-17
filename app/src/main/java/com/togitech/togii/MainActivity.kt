@@ -1,5 +1,6 @@
 package com.togitech.togii
 
+import com.togitech.ccp.component.TogiBottomCodePicker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
 
             SelectCountryWithCountryCode()
             RoundedPicker()
+            BottomCodePicker()
 
         }
     }
@@ -84,8 +85,6 @@ class MainActivity : ComponentActivity() {
                 defaultCountry = getLibCountries().single { it.countryCode == defaultLang },
                 focusedBorderColor = MaterialTheme.colors.primary,
                 unfocusedBorderColor = MaterialTheme.colors.primary,
-                dialogAppBarTextColor = Color.Black,
-                dialogAppBarColor = Color.White,
                 error = isValidPhone,
                 text = phoneNumber.value,
                 onValueChange = { phoneNumber.value = it }
@@ -110,6 +109,54 @@ class MainActivity : ComponentActivity() {
             ) {
                 Text(text = "Phone Verify")
             }
+        }
+    }
+}
+
+
+@Composable
+fun BottomCodePicker() {
+    val context = LocalContext.current
+    var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode(context)) }
+    val phoneNumber = rememberSaveable { mutableStateOf("") }
+    var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode(context)) }
+    var isValidPhone by remember { mutableStateOf(true) }
+
+    Column(
+        modifier = Modifier.padding(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TogiBottomCodePicker(
+            showCountryName = true,
+            pickedCountry = {
+                phoneCode = it.countryPhoneCode
+                defaultLang = it.countryCode
+            },
+            defaultCountry = getLibCountries().single { it.countryCode == defaultLang },
+            focusedBorderColor = MaterialTheme.colors.primary,
+            unfocusedBorderColor = MaterialTheme.colors.primary,
+            error = isValidPhone,
+            text = phoneNumber.value,
+            onValueChange = { phoneNumber.value = it }
+        )
+        val fullPhoneNumber = "$phoneCode${phoneNumber.value}"
+        val checkPhoneNumber = checkPhoneNumber(
+            phone = phoneNumber.value,
+            fullPhoneNumber = fullPhoneNumber,
+            countryCode = defaultLang
+        )
+        OutlinedButton(
+            onClick = {
+                isValidPhone = checkPhoneNumber
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .height(
+                    50.dp
+                )
+        ) {
+            Text(text = "Phone Verify")
         }
     }
 }

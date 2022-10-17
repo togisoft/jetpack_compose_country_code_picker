@@ -4,15 +4,19 @@ Jetpack Compose Country Code Picker
 
 <a href="https://www.buymeacoffee.com/togitech" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
+<h1>Updated</h1>
+
 If you are looking for Country Phone Code Picker for Jetpack Compose you can use the package.
+
 
 * Country numbers hints
 * Phone number visualTransformation (Automatic number formatting)
 * Automatic country recognition (detection by sim card if sim card is inserted)
 * With TextField
 * Can Customize
-* Adding language translations
-
+* Added language translations
+* Added clear text button
+* Dialog changed
 
 Languages:
 
@@ -20,6 +24,7 @@ Languages:
 * English
 * Italian
 * Arabic
+* Russian
 
 New features will be added every day. This project is open source without any profit motive.
 
@@ -28,23 +33,92 @@ https://github.com/togisoft/jetpack_compose_country_code_picker/blob/master/ccp/
 
 <h3>Screenshots</h3>
 <div class="row">
-  <img src="screenshots/1.gif" width="300"> 
-  <img src="screenshots/1.jpg" width="300"> 
-  <img src="screenshots/1-en.jpg" width="300"> 
-  <img src="screenshots/2.jpg" width="300"> 
-  <img src="screenshots/3.jpg" width="300"> 
-  <img src="screenshots/4.jpg" width="300"> 
-  <img src="screenshots/5.jpg" width="300"> 
-  <img src="screenshots/6-dark.jpg" width="300"> 
-  <img src="screenshots/7-dark.jpg" width="300"> 
+  <img src="screenshots/1.png" width="300"> 
+  <img src="screenshots/2.png" width="300"> 
+  <img src="screenshots/3.png" width="300"> 
+  <img src="screenshots/4.png" width="300"> 
+  <img src="screenshots/5.png" width="300"> 
+  <img src="screenshots/6.png" width="300"> 
+  <img src="screenshots/7.png" width="300"> 
+  <img src="screenshots/8.png" width="300"> 
  </div>
 
+
+**** Specifications ****
+
+<h3> DEFAULT </h3>
+
+```kotlin
+@Composable
+fun TogiCountryCodePicker(
+    text: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colors.background,
+    showCountryCode: Boolean = true,
+    showCountryFlag: Boolean = true,
+    defaultCountry: CountryData,
+    pickedCountry: (CountryData) -> Unit,
+    focusedBorderColor: Color = MaterialTheme.colors.primary,
+    unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
+    cursorColor: Color = MaterialTheme.colors.primary,
+    error: Boolean,
+    rowPadding: Modifier = modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+)
+
+```  
+
+<h3> Rounded </h3>
+
+```kotlin
+@Composable
+fun TogiRoundedPicker(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    shape: Shape = RoundedCornerShape(24.dp),
+    color: Color = MaterialTheme.colors.background,
+    showCountryCode: Boolean = true,
+    showCountryFlag: Boolean = true,
+    defaultCountry: CountryData,
+    pickedCountry: (CountryData) -> Unit,
+    focusedBorderColor: Color = MaterialTheme.colors.primary,
+    unFocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
+    cursorColor: Color = MaterialTheme.colors.primary,
+    error: Boolean,
+    rowPadding: Modifier = modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+)
+
+```  
+
+<h3> Bottom Text Field </h3>
+
+```kotlin
+@Composable
+fun TogiBottomCodePicker(
+    text: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colors.background,
+    showCountryCode: Boolean = true,
+    showCountryFlag: Boolean = true,
+    showCountryName: Boolean = true,
+    defaultCountry: CountryData,
+    pickedCountry: (CountryData) -> Unit,
+    focusedBorderColor: Color = MaterialTheme.colors.primary,
+    unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
+    cursorColor: Color = MaterialTheme.colors.primary,
+    error: Boolean,
+    rowPadding: Modifier = modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+)
+
+```  
 
 
 <h3> Rounded Field Usage </h3>
 
 ```kotlin
-        val context = LocalContext.current
+val context = LocalContext.current
 var phoneCode by rememberSaveable { mutableStateOf(getDefaultPhoneCode(context)) }
 var defaultLang by rememberSaveable { mutableStateOf(getDefaultLangCode(context)) }
 val phoneNumber = rememberSaveable { mutableStateOf("") }
@@ -92,8 +166,6 @@ fun SelectCountryWithCountryCode() {
             defaultCountry = getLibCountries().single { it.countryCode == defaultLang },
             focusedBorderColor = MaterialTheme.colors.primary,
             unfocusedBorderColor = MaterialTheme.colors.primary,
-            dialogAppBarTextColor = Color.Black,
-            dialogAppBarColor = Color.White,
             error = isValidPhone,
             text = phoneNumber.value,
             onValueChange = { phoneNumber.value = it }
@@ -131,8 +203,7 @@ fun SelectCountryWithCountryCode() {
 * focusedBorderColor = TextField Border Color
 * unfocusedBorderColor = TextField Unfocused Border Color
 * cursorColor = TextField Cursor Color
-* dialogAppBarColor = Dialog Top App Bar Background Color
-* dialogAppBarTextColor = Dialog Top App Bar Text Color
+
 
 <h3> How to add in your project </h3>
 
