@@ -220,8 +220,7 @@ Step 2. Add the dependency
 
 ```
   dependencies {
-	    implementation 'com.github.togisoft:jetpack_compose_country_code_picker:1.1.3'
-
+	  implementation 'com.github.togisoft:jetpack_compose_country_code_picker:1.1.4-beta.1'
 	}  
 ```    
 
