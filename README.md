@@ -117,9 +117,9 @@ fun CountryCodePickerExample() {
 
 <h3><- Functions -></h3>
 
-<b>getFullPhoneNumber()</b>  => Phone number with country code => return type <b>String</b> 
-<b>getOnlyPhoneNumber()</b> => Phone number only => return type <b>String</b> 
-<b>isPhoneNumber()</b> => Checks if the phone number is correct based on the country code => return type <b>Boolean</b>
+<b>getFullPhoneNumber()</b>  => Phone number with country code => return type <b>String</b> </br>
+<b>getOnlyPhoneNumber()</b> => Phone number only => return type <b>String</b> /br>
+<b>isPhoneNumber()</b> => Checks if the phone number is correct based on the country code => return type <b>Boolean</b>/br>
 
 <h3> How to add in your project </h3>
 
