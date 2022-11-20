@@ -2,248 +2,246 @@ package com.togitech.ccp.data.utils
 
 import com.togitech.ccp.data.CountryData
 
-fun getLibCountries(): List<CountryData> {
-    val countries: MutableList<CountryData> = ArrayList()
-    countries.add(CountryData("ad", "+376", "Andorra"))
-    countries.add(CountryData("ae", "+971", "United Arab Emirates (UAE)"))
-    countries.add(CountryData("af", "+93", "Afghanistan"))
-    countries.add(CountryData("ag", "+1", "Antigua and Barbuda"))
-    countries.add(CountryData("ai", "+1", "Anguilla"))
-    countries.add(CountryData("al", "+355", "Albania"))
-    countries.add(CountryData("am", "+374", "Armenia"))
-    countries.add(CountryData("ao", "+244", "Angola"))
-    countries.add(CountryData("aq", "+672", "Antarctica"))
-    countries.add(CountryData("ar", "+54", "Argentina"))
-    countries.add(CountryData("as", "+1", "American Samoa"))
-    countries.add(CountryData("at", "+43", "Austria"))
-    countries.add(CountryData("au", "+61", "Australia"))
-    countries.add(CountryData("aw", "+297", "Aruba"))
-    countries.add(CountryData("ax", "+358", "Åland Islands"))
-    countries.add(CountryData("az", "+994", "Azerbaijan"))
-    countries.add(CountryData("ba", "+387", "Bosnia And Herzegovina"))
-    countries.add(CountryData("bb", "+1", "Barbados"))
-    countries.add(CountryData("bd", "+880", "Bangladesh"))
-    countries.add(CountryData("be", "+32", "Belgium"))
-    countries.add(CountryData("bf", "+226", "Burkina Faso"))
-    countries.add(CountryData("bg", "+359", "Bulgaria"))
-    countries.add(CountryData("bh", "+973", "Bahrain"))
-    countries.add(CountryData("bi", "+257", "Burundi"))
-    countries.add(CountryData("bj", "+229", "Benin"))
-    countries.add(CountryData("bl", "+590", "Saint Barthélemy"))
-    countries.add(CountryData("bm", "+1", "Bermuda"))
-    countries.add(CountryData("bn", "+673", "Brunei Darussalam"))
-    countries.add(CountryData("bo", "+591", "Bolivia, Plurinational State Of"))
-    countries.add(CountryData("br", "+55", "Brazil"))
-    countries.add(CountryData("bs", "+1", "Bahamas"))
-    countries.add(CountryData("bt", "+975", "Bhutan"))
-    countries.add(CountryData("bw", "+267", "Botswana"))
-    countries.add(CountryData("by", "+375", "Belarus"))
-    countries.add(CountryData("bz", "+501", "Belize"))
-    countries.add(CountryData("ca", "+1", "Canada"))
-    countries.add(CountryData("cc", "+61", "Cocos (keeling) Islands"))
-    countries.add(CountryData("cd", "+243", "Congo, The Democratic Republic Of The"))
-    countries.add(CountryData("cf", "+236", "Central African Republic"))
-    countries.add(CountryData("cg", "+242", "Congo"))
-    countries.add(CountryData("ch", "+41", "Switzerland"))
-    countries.add(CountryData("ci", "+225", "Côte D'ivoire"))
-    countries.add(CountryData("ck", "+682", "Cook Islands"))
-    countries.add(CountryData("cl", "+56", "Chile"))
-    countries.add(CountryData("cm", "+237", "Cameroon"))
-    countries.add(CountryData("cn", "+86", "China"))
-    countries.add(CountryData("co", "+57", "Colombia"))
-    countries.add(CountryData("cr", "+506", "Costa Rica"))
-    countries.add(CountryData("cu", "+53", "Cuba"))
-    countries.add(CountryData("cv", "+238", "Cape Verde"))
-    countries.add(CountryData("cw", "+599", "Curaçao"))
-    countries.add(CountryData("cx", "+61", "Christmas Island"))
-    countries.add(CountryData("cy", "+357", "Cyprus"))
-    countries.add(CountryData("cz", "+420", "Czech Republic"))
-    countries.add(CountryData("de", "+49", "Germany"))
-    countries.add(CountryData("dj", "+253", "Djibouti"))
-    countries.add(CountryData("dk", "+45", "Denmark"))
-    countries.add(CountryData("dm", "+1", "Dominica"))
-    countries.add(CountryData("do", "+1", "Dominican Republic"))
-    countries.add(CountryData("dz", "+213", "Algeria"))
-    countries.add(CountryData("ec", "+593", "Ecuador"))
-    countries.add(CountryData("ee", "+372", "Estonia"))
-    countries.add(CountryData("eg", "+20", "Egypt"))
-    countries.add(CountryData("er", "+291", "Eritrea"))
-    countries.add(CountryData("es", "+34", "Spain"))
-    countries.add(CountryData("et", "+251", "Ethiopia"))
-    countries.add(CountryData("fi", "+358", "Finland"))
-    countries.add(CountryData("fj", "+679", "Fiji"))
-    countries.add(CountryData("fk", "+500", "Falkland Islands (malvinas)"))
-    countries.add(CountryData("fm", "+691", "Micronesia, Federated States Of"))
-    countries.add(CountryData("fo", "+298", "Faroe Islands"))
-    countries.add(CountryData("fr", "+33", "France"))
-    countries.add(CountryData("ga", "+241", "Gabon"))
-    countries.add(CountryData("gb", "+44", "United Kingdom"))
-    countries.add(CountryData("gd", "+1", "Grenada"))
-    countries.add(CountryData("ge", "+995", "Georgia"))
-    countries.add(CountryData("gf", "+594", "French Guyana"))
-    countries.add(CountryData("gh", "+233", "Ghana"))
-    countries.add(CountryData("gi", "+350", "Gibraltar"))
-    countries.add(CountryData("gl", "+299", "Greenland"))
-    countries.add(CountryData("gm", "+220", "Gambia"))
-    countries.add(CountryData("gn", "+224", "Guinea"))
-    countries.add(CountryData("gp", "+450", "Guadeloupe"))
-    countries.add(CountryData("gq", "+240", "Equatorial Guinea"))
-    countries.add(CountryData("gr", "+30", "Greece"))
-    countries.add(CountryData("gt", "+502", "Guatemala"))
-    countries.add(CountryData("gu", "+1", "Guam"))
-    countries.add(CountryData("gw", "+245", "Guinea-bissau"))
-    countries.add(CountryData("gy", "+592", "Guyana"))
-    countries.add(CountryData("hk", "+852", "Hong Kong"))
-    countries.add(CountryData("hn", "+504", "Honduras"))
-    countries.add(CountryData("hr", "+385", "Croatia"))
-    countries.add(CountryData("ht", "+509", "Haiti"))
-    countries.add(CountryData("hu", "+36", "Hungary"))
-    countries.add(CountryData("id", "+62", "Indonesia"))
-    countries.add(CountryData("ie", "+353", "Ireland"))
-    countries.add(CountryData("il", "+972", "Israel"))
-    countries.add(CountryData("im", "+44", "Isle Of Man"))
-    countries.add(CountryData("is", "+354", "Iceland"))
-    countries.add(CountryData("in", "+91", "India"))
-    countries.add(CountryData("io", "+246", "British Indian Ocean Territory"))
-    countries.add(CountryData("iq", "+964", "Iraq"))
-    countries.add(CountryData("ir", "+98", "Iran, Islamic Republic Of"))
-    countries.add(CountryData("it", "+39", "Italy"))
-    countries.add(CountryData("je", "+44", "Jersey "))
-    countries.add(CountryData("jm", "+1", "Jamaica"))
-    countries.add(CountryData("jo", "+962", "Jordan"))
-    countries.add(CountryData("jp", "+81", "Japan"))
-    countries.add(CountryData("ke", "+254", "Kenya"))
-    countries.add(CountryData("kg", "+996", "Kyrgyzstan"))
-    countries.add(CountryData("kh", "+855", "Cambodia"))
-    countries.add(CountryData("ki", "+686", "Kiribati"))
-    countries.add(CountryData("km", "+269", "Comoros"))
-    countries.add(CountryData("kn", "+1", "Saint Kitts and Nevis"))
-    countries.add(CountryData("kp", "+850", "North Korea"))
-    countries.add(CountryData("kr", "+82", "South Korea"))
-    countries.add(CountryData("kw", "+965", "Kuwait"))
-    countries.add(CountryData("ky", "+1", "Cayman Islands"))
-    countries.add(CountryData("kz", "+7", "Kazakhstan"))
-    countries.add(CountryData("la", "+856", "Lao People's Democratic Republic"))
-    countries.add(CountryData("lb", "+961", "Lebanon"))
-    countries.add(CountryData("lc", "+1", "Saint Lucia"))
-    countries.add(CountryData("li", "+423", "Liechtenstein"))
-    countries.add(CountryData("lk", "+94", "Sri Lanka"))
-    countries.add(CountryData("lr", "+231", "Liberia"))
-    countries.add(CountryData("ls", "+266", "Lesotho"))
-    countries.add(CountryData("lt", "+370", "Lithuania"))
-    countries.add(CountryData("lu", "+352", "Luxembourg"))
-    countries.add(CountryData("lv", "+371", "Latvia"))
-    countries.add(CountryData("ly", "+218", "Libya"))
-    countries.add(CountryData("ma", "+212", "Morocco"))
-    countries.add(CountryData("mc", "+377", "Monaco"))
-    countries.add(CountryData("md", "+373", "Moldova, Republic Of"))
-    countries.add(CountryData("me", "+382", "Montenegro"))
-    countries.add(CountryData("mf", "+590", "Saint Martin"))
-    countries.add(CountryData("mg", "+261", "Madagascar"))
-    countries.add(CountryData("mh", "+692", "Marshall Islands"))
-    countries.add(CountryData("mk", "+389", "Macedonia (FYROM)"))
-    countries.add(CountryData("ml", "+223", "Mali"))
-    countries.add(CountryData("mm", "+95", "Myanmar"))
-    countries.add(CountryData("mn", "+976", "Mongolia"))
-    countries.add(CountryData("mo", "+853", "Macau"))
-    countries.add(CountryData("mp", "+1", "Northern Mariana Islands"))
-    countries.add(CountryData("mq", "+596", "Martinique"))
-    countries.add(CountryData("mr", "+222", "Mauritania"))
-    countries.add(CountryData("ms", "+1", "Montserrat"))
-    countries.add(CountryData("mt", "+356", "Malta"))
-    countries.add(CountryData("mu", "+230", "Mauritius"))
-    countries.add(CountryData("mv", "+960", "Maldives"))
-    countries.add(CountryData("mw", "+265", "Malawi"))
-    countries.add(CountryData("mx", "+52", "Mexico"))
-    countries.add(CountryData("my", "+60", "Malaysia"))
-    countries.add(CountryData("mz", "+258", "Mozambique"))
-    countries.add(CountryData("na", "+264", "Namibia"))
-    countries.add(CountryData("nc", "+687", "New Caledonia"))
-    countries.add(CountryData("ne", "+227", "Niger"))
-    countries.add(CountryData("nf", "+672", "Norfolk Islands"))
-    countries.add(CountryData("ng", "+234", "Nigeria"))
-    countries.add(CountryData("ni", "+505", "Nicaragua"))
-    countries.add(CountryData("nl", "+31", "Netherlands"))
-    countries.add(CountryData("no", "+47", "Norway"))
-    countries.add(CountryData("np", "+977", "Nepal"))
-    countries.add(CountryData("nr", "+674", "Nauru"))
-    countries.add(CountryData("nu", "+683", "Niue"))
-    countries.add(CountryData("nz", "+64", "New Zealand"))
-    countries.add(CountryData("om", "+968", "Oman"))
-    countries.add(CountryData("pa", "+507", "Panama"))
-    countries.add(CountryData("pe", "+51", "Peru"))
-    countries.add(CountryData("pf", "+689", "French Polynesia"))
-    countries.add(CountryData("pg", "+675", "Papua New Guinea"))
-    countries.add(CountryData("ph", "+63", "Philippines"))
-    countries.add(CountryData("pk", "+92", "Pakistan"))
-    countries.add(CountryData("pl", "+48", "Poland"))
-    countries.add(CountryData("pm", "+508", "Saint Pierre And Miquelon"))
-    countries.add(CountryData("pn", "+870", "Pitcairn Islands"))
-    countries.add(CountryData("pr", "+1", "Puerto Rico"))
-    countries.add(CountryData("ps", "+970", "Palestine"))
-    countries.add(CountryData("pt", "+351", "Portugal"))
-    countries.add(CountryData("pw", "+680", "Palau"))
-    countries.add(CountryData("py", "+595", "Paraguay"))
-    countries.add(CountryData("qa", "+974", "Qatar"))
-    countries.add(CountryData("re", "+262", "Réunion"))
-    countries.add(CountryData("ro", "+40", "Romania"))
-    countries.add(CountryData("rs", "+381", "Serbia"))
-    countries.add(CountryData("ru", "+7", "Russian Federation"))
-    countries.add(CountryData("rw", "+250", "Rwanda"))
-    countries.add(CountryData("sa", "+966", "Saudi Arabia"))
-    countries.add(CountryData("sb", "+677", "Solomon Islands"))
-    countries.add(CountryData("sc", "+248", "Seychelles"))
-    countries.add(CountryData("sd", "+249", "Sudan"))
-    countries.add(CountryData("se", "+46", "Sweden"))
-    countries.add(CountryData("sg", "+65", "Singapore"))
-    countries.add(CountryData("sh", "+290", "Saint Helena, Ascension And Tristan Da Cunha"))
-    countries.add(CountryData("si", "+386", "Slovenia"))
-    countries.add(CountryData("sk", "+421", "Slovakia"))
-    countries.add(CountryData("sl", "+232", "Sierra Leone"))
-    countries.add(CountryData("sm", "+378", "San Marino"))
-    countries.add(CountryData("sn", "+221", "Senegal"))
-    countries.add(CountryData("so", "+252", "Somalia"))
-    countries.add(CountryData("sr", "+597", "Suriname"))
-    countries.add(CountryData("ss", "+211", "South Sudan"))
-    countries.add(CountryData("st", "+239", "Sao Tome And Principe"))
-    countries.add(CountryData("sv", "+503", "El Salvador"))
-    countries.add(CountryData("sx", "+1", "Sint Maarten"))
-    countries.add(CountryData("sy", "+963", "Syrian Arab Republic"))
-    countries.add(CountryData("sz", "+268", "Swaziland"))
-    countries.add(CountryData("tc", "+1", "Turks and Caicos Islands"))
-    countries.add(CountryData("td", "+235", "Chad"))
-    countries.add(CountryData("tg", "+228", "Togo"))
-    countries.add(CountryData("th", "+66", "Thailand"))
-    countries.add(CountryData("tj", "+992", "Tajikistan"))
-    countries.add(CountryData("tk", "+690", "Tokelau"))
-    countries.add(CountryData("tl", "+670", "Timor-leste"))
-    countries.add(CountryData("tm", "+993", "Turkmenistan"))
-    countries.add(CountryData("tn", "+216", "Tunisia"))
-    countries.add(CountryData("to", "+676", "Tonga"))
-    countries.add(CountryData("tr", "+90", "Turkey"))
-    countries.add(CountryData("tt", "+1", "Trinidad &amp; Tobago"))
-    countries.add(CountryData("tv", "+688", "Tuvalu"))
-    countries.add(CountryData("tw", "+886", "Taiwan"))
-    countries.add(CountryData("tz", "+255", "Tanzania, United Republic Of"))
-    countries.add(CountryData("ua", "+380", "Ukraine"))
-    countries.add(CountryData("ug", "+256", "Uganda"))
-    countries.add(CountryData("us", "+1", "United States"))
-    countries.add(CountryData("uy", "+598", "Uruguay"))
-    countries.add(CountryData("uz", "+998", "Uzbekistan"))
-    countries.add(CountryData("va", "+379", "Holy See (vatican City State)"))
-    countries.add(CountryData("vc", "+1", "Saint Vincent &amp; The Grenadines"))
-    countries.add(CountryData("ve", "+58", "Venezuela, Bolivarian Republic Of"))
-    countries.add(CountryData("vg", "+1", "British Virgin Islands"))
-    countries.add(CountryData("vi", "+1", "US Virgin Islands"))
-    countries.add(CountryData("vn", "+84", "Vietnam"))
-    countries.add(CountryData("vu", "+678", "Vanuatu"))
-    countries.add(CountryData("wf", "+681", "Wallis And Futuna"))
-    countries.add(CountryData("ws", "4685", "Samoa"))
-    countries.add(CountryData("xk", "+383", "Kosovo"))
-    countries.add(CountryData("ye", "+967", "Yemen"))
-    countries.add(CountryData("yt", "+262", "Mayotte"))
-    countries.add(CountryData("za", "+27", "South Africa"))
-    countries.add(CountryData("zm", "+260", "Zambia"))
-    countries.add(CountryData("zw", "+263", "Zimbabwe"))
-    return countries
-}
+var getLibCountries: List<CountryData> = mutableListOf(
+    CountryData("ad", "+376", "Andorra"),
+    CountryData("ae", "+971", "United Arab Emirates (UAE)"),
+    CountryData("af", "+93", "Afghanistan"),
+    CountryData("ag", "+1", "Antigua and Barbuda"),
+    CountryData("ai", "+1", "Anguilla"),
+    CountryData("al", "+355", "Albania"),
+    CountryData("am", "+374", "Armenia"),
+    CountryData("ao", "+244", "Angola"),
+    CountryData("aq", "+672", "Antarctica"),
+    CountryData("ar", "+54", "Argentina"),
+    CountryData("as", "+1", "American Samoa"),
+    CountryData("at", "+43", "Austria"),
+    CountryData("au", "+61", "Australia"),
+    CountryData("aw", "+297", "Aruba"),
+    CountryData("ax", "+358", "Åland Islands"),
+    CountryData("az", "+994", "Azerbaijan"),
+    CountryData("ba", "+387", "Bosnia And Herzegovina"),
+    CountryData("bb", "+1", "Barbados"),
+    CountryData("bd", "+880", "Bangladesh"),
+    CountryData("be", "+32", "Belgium"),
+    CountryData("bf", "+226", "Burkina Faso"),
+    CountryData("bg", "+359", "Bulgaria"),
+    CountryData("bh", "+973", "Bahrain"),
+    CountryData("bi", "+257", "Burundi"),
+    CountryData("bj", "+229", "Benin"),
+    CountryData("bl", "+590", "Saint Barthélemy"),
+    CountryData("bm", "+1", "Bermuda"),
+    CountryData("bn", "+673", "Brunei Darussalam"),
+    CountryData("bo", "+591", "Bolivia, Plurinational State Of"),
+    CountryData("br", "+55", "Brazil"),
+    CountryData("bs", "+1", "Bahamas"),
+    CountryData("bt", "+975", "Bhutan"),
+    CountryData("bw", "+267", "Botswana"),
+    CountryData("by", "+375", "Belarus"),
+    CountryData("bz", "+501", "Belize"),
+    CountryData("ca", "+1", "Canada"),
+    CountryData("cc", "+61", "Cocos (keeling) Islands"),
+    CountryData("cd", "+243", "Congo, The Democratic Republic Of The"),
+    CountryData("cf", "+236", "Central African Republic"),
+    CountryData("cg", "+242", "Congo"),
+    CountryData("ch", "+41", "Switzerland"),
+    CountryData("ci", "+225", "Côte D'ivoire"),
+    CountryData("ck", "+682", "Cook Islands"),
+    CountryData("cl", "+56", "Chile"),
+    CountryData("cm", "+237", "Cameroon"),
+    CountryData("cn", "+86", "China"),
+    CountryData("co", "+57", "Colombia"),
+    CountryData("cr", "+506", "Costa Rica"),
+    CountryData("cu", "+53", "Cuba"),
+    CountryData("cv", "+238", "Cape Verde"),
+    CountryData("cw", "+599", "Curaçao"),
+    CountryData("cx", "+61", "Christmas Island"),
+    CountryData("cy", "+357", "Cyprus"),
+    CountryData("cz", "+420", "Czech Republic"),
+    CountryData("de", "+49", "Germany"),
+    CountryData("dj", "+253", "Djibouti"),
+    CountryData("dk", "+45", "Denmark"),
+    CountryData("dm", "+1", "Dominica"),
+    CountryData("do", "+1", "Dominican Republic"),
+    CountryData("dz", "+213", "Algeria"),
+    CountryData("ec", "+593", "Ecuador"),
+    CountryData("ee", "+372", "Estonia"),
+    CountryData("eg", "+20", "Egypt"),
+    CountryData("er", "+291", "Eritrea"),
+    CountryData("es", "+34", "Spain"),
+    CountryData("et", "+251", "Ethiopia"),
+    CountryData("fi", "+358", "Finland"),
+    CountryData("fj", "+679", "Fiji"),
+    CountryData("fk", "+500", "Falkland Islands (malvinas)"),
+    CountryData("fm", "+691", "Micronesia, Federated States Of"),
+    CountryData("fo", "+298", "Faroe Islands"),
+    CountryData("fr", "+33", "France"),
+    CountryData("ga", "+241", "Gabon"),
+    CountryData("gb", "+44", "United Kingdom"),
+    CountryData("gd", "+1", "Grenada"),
+    CountryData("ge", "+995", "Georgia"),
+    CountryData("gf", "+594", "French Guyana"),
+    CountryData("gh", "+233", "Ghana"),
+    CountryData("gi", "+350", "Gibraltar"),
+    CountryData("gl", "+299", "Greenland"),
+    CountryData("gm", "+220", "Gambia"),
+    CountryData("gn", "+224", "Guinea"),
+    CountryData("gp", "+450", "Guadeloupe"),
+    CountryData("gq", "+240", "Equatorial Guinea"),
+    CountryData("gr", "+30", "Greece"),
+    CountryData("gt", "+502", "Guatemala"),
+    CountryData("gu", "+1", "Guam"),
+    CountryData("gw", "+245", "Guinea-bissau"),
+    CountryData("gy", "+592", "Guyana"),
+    CountryData("hk", "+852", "Hong Kong"),
+    CountryData("hn", "+504", "Honduras"),
+    CountryData("hr", "+385", "Croatia"),
+    CountryData("ht", "+509", "Haiti"),
+    CountryData("hu", "+36", "Hungary"),
+    CountryData("id", "+62", "Indonesia"),
+    CountryData("ie", "+353", "Ireland"),
+    CountryData("il", "+972", "Israel"),
+    CountryData("im", "+44", "Isle Of Man"),
+    CountryData("is", "+354", "Iceland"),
+    CountryData("in", "+91", "India"),
+    CountryData("io", "+246", "British Indian Ocean Territory"),
+    CountryData("iq", "+964", "Iraq"),
+    CountryData("ir", "+98", "Iran, Islamic Republic Of"),
+    CountryData("it", "+39", "Italy"),
+    CountryData("je", "+44", "Jersey "),
+    CountryData("jm", "+1", "Jamaica"),
+    CountryData("jo", "+962", "Jordan"),
+    CountryData("jp", "+81", "Japan"),
+    CountryData("ke", "+254", "Kenya"),
+    CountryData("kg", "+996", "Kyrgyzstan"),
+    CountryData("kh", "+855", "Cambodia"),
+    CountryData("ki", "+686", "Kiribati"),
+    CountryData("km", "+269", "Comoros"),
+    CountryData("kn", "+1", "Saint Kitts and Nevis"),
+    CountryData("kp", "+850", "North Korea"),
+    CountryData("kr", "+82", "South Korea"),
+    CountryData("kw", "+965", "Kuwait"),
+    CountryData("ky", "+1", "Cayman Islands"),
+    CountryData("kz", "+7", "Kazakhstan"),
+    CountryData("la", "+856", "Lao People's Democratic Republic"),
+    CountryData("lb", "+961", "Lebanon"),
+    CountryData("lc", "+1", "Saint Lucia"),
+    CountryData("li", "+423", "Liechtenstein"),
+    CountryData("lk", "+94", "Sri Lanka"),
+    CountryData("lr", "+231", "Liberia"),
+    CountryData("ls", "+266", "Lesotho"),
+    CountryData("lt", "+370", "Lithuania"),
+    CountryData("lu", "+352", "Luxembourg"),
+    CountryData("lv", "+371", "Latvia"),
+    CountryData("ly", "+218", "Libya"),
+    CountryData("ma", "+212", "Morocco"),
+    CountryData("mc", "+377", "Monaco"),
+    CountryData("md", "+373", "Moldova, Republic Of"),
+    CountryData("me", "+382", "Montenegro"),
+    CountryData("mf", "+590", "Saint Martin"),
+    CountryData("mg", "+261", "Madagascar"),
+    CountryData("mh", "+692", "Marshall Islands"),
+    CountryData("mk", "+389", "Macedonia (FYROM)"),
+    CountryData("ml", "+223", "Mali"),
+    CountryData("mm", "+95", "Myanmar"),
+    CountryData("mn", "+976", "Mongolia"),
+    CountryData("mo", "+853", "Macau"),
+    CountryData("mp", "+1", "Northern Mariana Islands"),
+    CountryData("mq", "+596", "Martinique"),
+    CountryData("mr", "+222", "Mauritania"),
+    CountryData("ms", "+1", "Montserrat"),
+    CountryData("mt", "+356", "Malta"),
+    CountryData("mu", "+230", "Mauritius"),
+    CountryData("mv", "+960", "Maldives"),
+    CountryData("mw", "+265", "Malawi"),
+    CountryData("mx", "+52", "Mexico"),
+    CountryData("my", "+60", "Malaysia"),
+    CountryData("mz", "+258", "Mozambique"),
+    CountryData("na", "+264", "Namibia"),
+    CountryData("nc", "+687", "New Caledonia"),
+    CountryData("ne", "+227", "Niger"),
+    CountryData("nf", "+672", "Norfolk Islands"),
+    CountryData("ng", "+234", "Nigeria"),
+    CountryData("ni", "+505", "Nicaragua"),
+    CountryData("nl", "+31", "Netherlands"),
+    CountryData("no", "+47", "Norway"),
+    CountryData("np", "+977", "Nepal"),
+    CountryData("nr", "+674", "Nauru"),
+    CountryData("nu", "+683", "Niue"),
+    CountryData("nz", "+64", "New Zealand"),
+    CountryData("om", "+968", "Oman"),
+    CountryData("pa", "+507", "Panama"),
+    CountryData("pe", "+51", "Peru"),
+    CountryData("pf", "+689", "French Polynesia"),
+    CountryData("pg", "+675", "Papua New Guinea"),
+    CountryData("ph", "+63", "Philippines"),
+    CountryData("pk", "+92", "Pakistan"),
+    CountryData("pl", "+48", "Poland"),
+    CountryData("pm", "+508", "Saint Pierre And Miquelon"),
+    CountryData("pn", "+870", "Pitcairn Islands"),
+    CountryData("pr", "+1", "Puerto Rico"),
+    CountryData("ps", "+970", "Palestine"),
+    CountryData("pt", "+351", "Portugal"),
+    CountryData("pw", "+680", "Palau"),
+    CountryData("py", "+595", "Paraguay"),
+    CountryData("qa", "+974", "Qatar"),
+    CountryData("re", "+262", "Réunion"),
+    CountryData("ro", "+40", "Romania"),
+    CountryData("rs", "+381", "Serbia"),
+    CountryData("ru", "+7", "Russian Federation"),
+    CountryData("rw", "+250", "Rwanda"),
+    CountryData("sa", "+966", "Saudi Arabia"),
+    CountryData("sb", "+677", "Solomon Islands"),
+    CountryData("sc", "+248", "Seychelles"),
+    CountryData("sd", "+249", "Sudan"),
+    CountryData("se", "+46", "Sweden"),
+    CountryData("sg", "+65", "Singapore"),
+    CountryData("sh", "+290", "Saint Helena, Ascension And Tristan Da Cunha"),
+    CountryData("si", "+386", "Slovenia"),
+    CountryData("sk", "+421", "Slovakia"),
+    CountryData("sl", "+232", "Sierra Leone"),
+    CountryData("sm", "+378", "San Marino"),
+    CountryData("sn", "+221", "Senegal"),
+    CountryData("so", "+252", "Somalia"),
+    CountryData("sr", "+597", "Suriname"),
+    CountryData("ss", "+211", "South Sudan"),
+    CountryData("st", "+239", "Sao Tome And Principe"),
+    CountryData("sv", "+503", "El Salvador"),
+    CountryData("sx", "+1", "Sint Maarten"),
+    CountryData("sy", "+963", "Syrian Arab Republic"),
+    CountryData("sz", "+268", "Swaziland"),
+    CountryData("tc", "+1", "Turks and Caicos Islands"),
+    CountryData("td", "+235", "Chad"),
+    CountryData("tg", "+228", "Togo"),
+    CountryData("th", "+66", "Thailand"),
+    CountryData("tj", "+992", "Tajikistan"),
+    CountryData("tk", "+690", "Tokelau"),
+    CountryData("tl", "+670", "Timor-leste"),
+    CountryData("tm", "+993", "Turkmenistan"),
+    CountryData("tn", "+216", "Tunisia"),
+    CountryData("to", "+676", "Tonga"),
+    CountryData("tr", "+90", "Turkey"),
+    CountryData("tt", "+1", "Trinidad &amp; Tobago"),
+    CountryData("tv", "+688", "Tuvalu"),
+    CountryData("tw", "+886", "Taiwan"),
+    CountryData("tz", "+255", "Tanzania, United Republic Of"),
+    CountryData("ua", "+380", "Ukraine"),
+    CountryData("ug", "+256", "Uganda"),
+    CountryData("us", "+1", "United States"),
+    CountryData("uy", "+598", "Uruguay"),
+    CountryData("uz", "+998", "Uzbekistan"),
+    CountryData("va", "+379", "Holy See (vatican City State)"),
+    CountryData("vc", "+1", "Saint Vincent &amp; The Grenadines"),
+    CountryData("ve", "+58", "Venezuela, Bolivarian Republic Of"),
+    CountryData("vg", "+1", "British Virgin Islands"),
+    CountryData("vi", "+1", "US Virgin Islands"),
+    CountryData("vn", "+84", "Vietnam"),
+    CountryData("vu", "+678", "Vanuatu"),
+    CountryData("wf", "+681", "Wallis And Futuna"),
+    CountryData("ws", "4685", "Samoa"),
+    CountryData("xk", "+383", "Kosovo"),
+    CountryData("ye", "+967", "Yemen"),
+    CountryData("yt", "+262", "Mayotte"),
+    CountryData("za", "+27", "South Africa"),
+    CountryData("zm", "+260", "Zambia"),
+    CountryData("zw", "+263", "Zimbabwe"),
+)
