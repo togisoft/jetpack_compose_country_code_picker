@@ -86,7 +86,11 @@ fun TogiCodeDialog(
                     modifier = Modifier.padding(start = 6.dp),
                     style = textStyleDefault,
                 )
-                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null,
+                    tint = textStyleDefault.color
+                )
             }
             if (showCountryName) {
                 Text(
@@ -94,7 +98,11 @@ fun TogiCodeDialog(
                     modifier = Modifier.padding(start = 6.dp),
                     style = textStyleDefault,
                 )
-                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null,
+                    tint = textStyleDefault.color
+                )
             }
         }
 
@@ -126,7 +134,7 @@ fun CountryDialog(
     context: Context,
     dialogStatus: Boolean,
     textStyleDefault: TextStyle = TextStyle.Default,
-    backgroundColor : Color = MaterialTheme.colors.background,
+    backgroundColor: Color = MaterialTheme.colors.background,
 ) {
     var searchValue by remember { mutableStateOf("") }
     if (!dialogStatus) searchValue = ""
@@ -142,7 +150,9 @@ fun CountryDialog(
             ) {
                 Scaffold { scaffold ->
                     scaffold.calculateBottomPadding()
-                    Column(modifier = Modifier.fillMaxSize().background(backgroundColor)) {
+                    Column(modifier = Modifier
+                        .fillMaxSize()
+                        .background(backgroundColor)) {
                         SearchTextField(
                             value = searchValue, onValueChange = { searchValue = it },
                             textColor = textStyleDefault.color,

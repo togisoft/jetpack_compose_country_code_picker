@@ -159,7 +159,7 @@ fun TogiCountryCodePicker(
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "Clear",
-                                tint = if (getErrorStatus()) textStyleError.color else MaterialTheme.colors.onSurface
+                                tint = if (getErrorStatus()) textStyleError.color else textStyleDefault.color
                             )
                         }
                     })
