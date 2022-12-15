@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -49,9 +50,22 @@ fun TogiCountryCodePicker(
     unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
     cursorColor: Color = MaterialTheme.colors.primary,
     bottomStyle: Boolean = false,
-    textColorDefault: Color = MaterialTheme.colors.onBackground,
-    textColorHint: Color = MaterialTheme.colors.onBackground,
-    textColorError: Color = MaterialTheme.colors.error,
+    textStyleDefault: TextStyle = TextStyle.Default,
+    textStyleHint: TextStyle = TextStyle(
+        fontWeight = FontWeight.Normal,
+        color = MaterialTheme.colors.onBackground,
+        fontSize = MaterialTheme.typography.body1.fontSize,
+    ),
+    textStyleError: TextStyle = TextStyle(
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colors.error,
+        fontSize = MaterialTheme.typography.caption.fontSize,
+    ),
+    countryCodeStyle: TextStyle = TextStyle(
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colors.onBackground,
+        fontSize = MaterialTheme.typography.body1.fontSize,
+    ),
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -106,10 +120,10 @@ fun TogiCountryCodePicker(
                         focusedBorderColor = if (getErrorStatus()) Color.Red else focusedBorderColor,
                         unfocusedBorderColor = if (getErrorStatus()) Color.Red else unfocusedBorderColor,
                         cursorColor = cursorColor,
-                        textColor = textColorDefault,
                     ),
+                    textStyle = textStyleDefault,
                     visualTransformation = PhoneNumberTransformation(getLibCountries.single { it.countryCode == defaultLang }.countryCode.uppercase()),
-                    placeholder = { Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())), color = textColorHint) },
+                    placeholder = { Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())), style = textStyleHint) },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.NumberPassword,
                         autoCorrect = true,
@@ -129,7 +143,7 @@ fun TogiCountryCodePicker(
                                         defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
                                         showCountryCode = showCountryCode,
                                         showFlag = showCountryFlag,
-                                        textColorDefault = textColorDefault
+                                        textStyleDefault = countryCodeStyle,
                                     )
                                 }
                             }
@@ -142,16 +156,14 @@ fun TogiCountryCodePicker(
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "Clear",
-                                tint = if (getErrorStatus()) Color.Red else MaterialTheme.colors.onSurface
+                                tint = if (getErrorStatus()) textStyleError.color else MaterialTheme.colors.onSurface
                             )
                         }
                     })
             }
             if (getErrorStatus()) Text(
                 text = stringResource(id = R.string.invalid_number),
-                color = textColorError,
-                style = MaterialTheme.typography.caption,
-                fontWeight = FontWeight.Bold,
+                style = textStyleError,
                 modifier = Modifier.padding(top = 0.8.dp)
             )
         }
