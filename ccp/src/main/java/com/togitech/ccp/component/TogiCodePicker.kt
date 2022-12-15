@@ -23,11 +23,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
@@ -144,7 +142,7 @@ fun CountryDialog(
                         SearchTextField(
                             value = searchValue, onValueChange = { searchValue = it },
                             textColor = textStyleDefault.color,
-                            fontSize = 16.sp,
+                            fontSize = textStyleDefault.fontSize,
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.Filled.Search,
@@ -185,8 +183,8 @@ fun CountryDialog(
                                     Text(
                                         stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
                                         Modifier.padding(horizontal = 18.dp),
-                                        fontSize = 14.sp,
-                                        fontFamily = FontFamily.Serif,
+                                        style = textStyleDefault,
+                                        fontFamily = textStyleDefault.fontFamily
                                     )
                                 }
                             }
