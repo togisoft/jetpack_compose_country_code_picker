@@ -46,6 +46,7 @@ fun TogiCodeDialog(
     pickedCountry: (CountryData) -> Unit,
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
+    textColorDefault: Color = MaterialTheme.colors.onSurface,
 
     ) {
     val context = LocalContext.current
@@ -85,7 +86,7 @@ fun TogiCodeDialog(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 6.dp),
                     fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface
+                    color = textColorDefault
                 )
                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
             }
@@ -95,7 +96,7 @@ fun TogiCodeDialog(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 6.dp),
                     fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface
+                    color = textColorDefault
                 )
                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
             }
@@ -112,7 +113,8 @@ fun TogiCodeDialog(
                     pickedCountry(countryItem)
                     isPickCountry = countryItem
                     isOpenDialog = false
-                }
+                },
+                textColorDefault = textColorDefault,
             )
         }
     }
@@ -126,6 +128,7 @@ fun CountryDialog(
     onSelected: (item: CountryData) -> Unit,
     context: Context,
     dialogStatus: Boolean,
+    textColorDefault: Color = MaterialTheme.colors.onSurface,
 ) {
     var searchValue by remember { mutableStateOf("") }
     if (!dialogStatus) searchValue = ""
@@ -134,7 +137,7 @@ fun CountryDialog(
         onDismissRequest = onDismissRequest,
         content = {
             Surface(
-                color = MaterialTheme.colors.onSurface,
+                color = textColorDefault,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(25.dp))
@@ -144,13 +147,13 @@ fun CountryDialog(
                     Column(modifier = Modifier.fillMaxSize()) {
                         SearchTextField(
                             value = searchValue, onValueChange = { searchValue = it },
-                            textColor = MaterialTheme.colors.onSurface,
+                            textColor = textColorDefault,
                             fontSize = 16.sp,
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.Filled.Search,
                                     contentDescription = "Search",
-                                    tint = MaterialTheme.colors.onSurface,
+                                    tint = textColorDefault,
                                     modifier = Modifier.padding(horizontal = 3.dp)
                                 )
                             },

@@ -48,7 +48,10 @@ fun TogiCountryCodePicker(
     focusedBorderColor: Color = MaterialTheme.colors.primary,
     unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
     cursorColor: Color = MaterialTheme.colors.primary,
-    bottomStyle: Boolean = false
+    bottomStyle: Boolean = false,
+    textColorDefault: Color = MaterialTheme.colors.onBackground,
+    textColorHint: Color = MaterialTheme.colors.onBackground,
+    textColorError: Color = MaterialTheme.colors.error,
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -102,10 +105,11 @@ fun TogiCountryCodePicker(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = if (getErrorStatus()) Color.Red else focusedBorderColor,
                         unfocusedBorderColor = if (getErrorStatus()) Color.Red else unfocusedBorderColor,
-                        cursorColor = cursorColor
+                        cursorColor = cursorColor,
+                        textColor = textColorDefault,
                     ),
                     visualTransformation = PhoneNumberTransformation(getLibCountries.single { it.countryCode == defaultLang }.countryCode.uppercase()),
-                    placeholder = { Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase()))) },
+                    placeholder = { Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase())), color = textColorHint) },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.NumberPassword,
                         autoCorrect = true,
@@ -124,7 +128,8 @@ fun TogiCountryCodePicker(
                                         },
                                         defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
                                         showCountryCode = showCountryCode,
-                                        showFlag = showCountryFlag
+                                        showFlag = showCountryFlag,
+                                        textColorDefault = textColorDefault
                                     )
                                 }
                             }
@@ -144,7 +149,7 @@ fun TogiCountryCodePicker(
             }
             if (getErrorStatus()) Text(
                 text = stringResource(id = R.string.invalid_number),
-                color = MaterialTheme.colors.error,
+                color = textColorError,
                 style = MaterialTheme.typography.caption,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 0.8.dp)

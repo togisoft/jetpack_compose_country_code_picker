@@ -66,7 +66,10 @@ fun CountryCodePick() {
             onValueChange = { phoneNumber.value = it },
             unfocusedBorderColor = MaterialTheme.colors.primary,
             bottomStyle =false,
-            shape = RoundedCornerShape(24.dp)
+            shape = RoundedCornerShape(24.dp),
+            textColorDefault = Color.Blue, // Or any color for the text
+            textColorHint = Color.Gray, // Or any color for the hint
+            textColorError = Color.Red, // Or any color for the error
         )
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = {
