@@ -66,7 +66,10 @@ fun TogiCountryCodePicker(
         color = MaterialTheme.colors.onBackground,
         fontSize = MaterialTheme.typography.body1.fontSize,
     ),
-    countryCodeDialogBackgroundColor: Color
+    countryCodeDialogBackgroundColor: Color,
+    changeStatustoErrorIfError: Boolean = true,
+   turnLiveErrorStatusOn: Boolean = false,
+    liveErrorStatus: (Boolean) -> Unit = {},
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -84,8 +87,6 @@ fun TogiCountryCodePicker(
         )
     }
 
-    fullNumberState = phoneCode + textFieldValue
-    phoneNumberState = textFieldValue
     countryCodeState = defaultLang
 
 
@@ -116,11 +117,18 @@ fun TogiCountryCodePicker(
                         if (text != it) {
                             onValueChange(it)
                         }
+                        fullNumberState = phoneCode + textFieldValue
+                        phoneNumberState = textFieldValue
+
+                        if (turnLiveErrorStatusOn) {
+                            liveErrorStatus(isPhoneNumber())
+                        }
+
                     },
                     singleLine = true,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = if (getErrorStatus()) Color.Red else focusedBorderColor,
-                        unfocusedBorderColor = if (getErrorStatus()) Color.Red else unfocusedBorderColor,
+                        focusedBorderColor = if (getErrorStatus() && changeStatustoErrorIfError) Color.Red else focusedBorderColor,
+                        unfocusedBorderColor = if (getErrorStatus() && changeStatustoErrorIfError) Color.Red else unfocusedBorderColor,
                         cursorColor = cursorColor,
                     ),
                     textStyle = textStyleDefault,
@@ -159,12 +167,12 @@ fun TogiCountryCodePicker(
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "Clear",
-                                tint = if (getErrorStatus()) textStyleError.color else textStyleDefault.color
+                                tint = if (getErrorStatus() && changeStatustoErrorIfError) textStyleError.color else textStyleDefault.color,
                             )
                         }
                     })
             }
-            if (getErrorStatus()) Text(
+            if (getErrorStatus() && changeStatustoErrorIfError) Text(
                 text = stringResource(id = R.string.invalid_number),
                 style = textStyleError,
                 modifier = Modifier.padding(top = 0.8.dp)
