@@ -2,6 +2,7 @@ package com.togitech.ccp.component
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -45,6 +46,7 @@ fun TogiCodeDialog(
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
     textStyleDefault: TextStyle = TextStyle.Default,
+    backgroundColor: Color = MaterialTheme.colors.background,
 
     ) {
     val context = LocalContext.current
@@ -109,6 +111,7 @@ fun TogiCodeDialog(
                     isOpenDialog = false
                 },
                 textStyleDefault = textStyleDefault,
+                backgroundColor = backgroundColor,
             )
         }
     }
@@ -123,6 +126,7 @@ fun CountryDialog(
     context: Context,
     dialogStatus: Boolean,
     textStyleDefault: TextStyle = TextStyle.Default,
+    backgroundColor : Color = MaterialTheme.colors.background,
 ) {
     var searchValue by remember { mutableStateOf("") }
     if (!dialogStatus) searchValue = ""
@@ -138,7 +142,7 @@ fun CountryDialog(
             ) {
                 Scaffold { scaffold ->
                     scaffold.calculateBottomPadding()
-                    Column(modifier = Modifier.fillMaxSize()) {
+                    Column(modifier = Modifier.fillMaxSize().background(backgroundColor)) {
                         SearchTextField(
                             value = searchValue, onValueChange = { searchValue = it },
                             textColor = textStyleDefault.color,

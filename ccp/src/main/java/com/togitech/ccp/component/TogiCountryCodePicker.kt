@@ -66,6 +66,7 @@ fun TogiCountryCodePicker(
         color = MaterialTheme.colors.onBackground,
         fontSize = MaterialTheme.typography.body1.fontSize,
     ),
+    countryCodeDialogBackgroundColor: Color
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -99,7 +100,8 @@ fun TogiCountryCodePicker(
                     defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
                     showCountryCode = showCountryCode,
                     showFlag = showCountryFlag,
-                    showCountryName = true
+                    showCountryName = true,
+                    backgroundColor = countryCodeDialogBackgroundColor,
                 )
             }
             Row(
@@ -144,6 +146,7 @@ fun TogiCountryCodePicker(
                                         showCountryCode = showCountryCode,
                                         showFlag = showCountryFlag,
                                         textStyleDefault = countryCodeStyle,
+                                        backgroundColor = countryCodeDialogBackgroundColor,
                                     )
                                 }
                             }

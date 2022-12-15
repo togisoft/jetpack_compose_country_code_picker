@@ -89,6 +89,7 @@ fun CountryCodePick() {
                 color = Color.Yellow,
                 fontSize = MaterialTheme.typography.body1.fontSize,
             ),
+            countryCodeDialogBackgroundColor = Color.DarkGray
         )
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = {
