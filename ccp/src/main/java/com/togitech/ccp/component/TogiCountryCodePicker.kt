@@ -88,6 +88,8 @@ fun TogiCountryCodePicker(
     }
 
     countryCodeState = defaultLang
+    fullNumberState = phoneCode + textFieldValue
+    phoneNumberState = textFieldValue
 
 
     Surface(color = color) {
