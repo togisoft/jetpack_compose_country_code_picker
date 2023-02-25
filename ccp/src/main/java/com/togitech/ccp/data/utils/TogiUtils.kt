@@ -27,7 +27,7 @@ fun checkPhoneNumber(phone: String, fullPhoneNumber: String, countryCode: String
         return try {
             number = PhoneNumberUtil.getInstance().parse(
                 fullPhoneNumber,
-                Phonenumber.PhoneNumber.CountryCodeSource.UNSPECIFIED.name
+                Phonenumber.PhoneNumber.CountryCodeSource.UNSPECIFIED.name,
             )
             !PhoneNumberUtil.getInstance().isValidNumberForRegion(number, countryCode.uppercase())
         } catch (ex: Exception) {
@@ -35,4 +35,15 @@ fun checkPhoneNumber(phone: String, fullPhoneNumber: String, countryCode: String
         }
     }
     return true
+}
+
+fun countryCodeToEmojiFlag(countryCode: String): String {
+    return countryCode
+        .uppercase()
+        .map { char ->
+            Character.codePointAt("$char", 0) + 0x1F1A5
+        }
+        .joinToString("") {
+            String(Character.toChars(it))
+        }
 }

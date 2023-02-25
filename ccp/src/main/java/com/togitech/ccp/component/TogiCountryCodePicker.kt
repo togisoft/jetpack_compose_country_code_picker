@@ -1,10 +1,20 @@
 package com.togitech.ccp.component
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
@@ -29,12 +39,10 @@ import com.togitech.ccp.data.utils.getLibCountries
 import com.togitech.ccp.data.utils.getNumberHint
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 
-
 private var fullNumberState: String by mutableStateOf("")
 private var checkNumberState: Boolean by mutableStateOf(false)
 private var phoneNumberState: String by mutableStateOf("")
 private var countryCodeState: String by mutableStateOf("")
-
 
 @Composable
 fun TogiCountryCodePicker(
@@ -48,7 +56,7 @@ fun TogiCountryCodePicker(
     focusedBorderColor: Color = MaterialTheme.colors.primary,
     unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
     cursorColor: Color = MaterialTheme.colors.primary,
-    bottomStyle: Boolean = false
+    bottomStyle: Boolean = false,
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -56,20 +64,19 @@ fun TogiCountryCodePicker(
     var phoneCode by rememberSaveable {
         mutableStateOf(
             getDefaultPhoneCode(
-                context
-            )
+                context,
+            ),
         )
     }
     var defaultLang by rememberSaveable {
         mutableStateOf(
-            getDefaultLangCode(context)
+            getDefaultLangCode(context),
         )
     }
 
     fullNumberState = phoneCode + textFieldValue
     phoneNumberState = textFieldValue
     countryCodeState = defaultLang
-
 
     Surface(color = color) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
@@ -79,17 +86,20 @@ fun TogiCountryCodePicker(
                         phoneCode = it.countryPhoneCode
                         defaultLang = it.countryCode
                     },
-                    defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
+                    defaultSelectedCountry = getLibCountries.single {
+                        it.countryCode == defaultLang
+                    },
                     showCountryCode = showCountryCode,
                     showFlag = showCountryFlag,
-                    showCountryName = true
+                    showCountryName = true,
                 )
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
             ) {
-                OutlinedTextField(modifier = modifier.fillMaxWidth(),
+                OutlinedTextField(
+                    modifier = modifier.fillMaxWidth(),
                     shape = shape,
                     value = textFieldValue,
                     onValueChange = {
@@ -102,10 +112,24 @@ fun TogiCountryCodePicker(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = if (getErrorStatus()) Color.Red else focusedBorderColor,
                         unfocusedBorderColor = if (getErrorStatus()) Color.Red else unfocusedBorderColor,
-                        cursorColor = cursorColor
+                        cursorColor = cursorColor,
                     ),
-                    visualTransformation = PhoneNumberTransformation(getLibCountries.single { it.countryCode == defaultLang }.countryCode.uppercase()),
-                    placeholder = { Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase()))) },
+                    visualTransformation = PhoneNumberTransformation(
+                        getLibCountries.single {
+                            it.countryCode == defaultLang
+                        }.countryCode.uppercase(),
+                    ),
+                    placeholder = {
+                        Text(
+                            text = stringResource(
+                                id = getNumberHint(
+                                    getLibCountries.single {
+                                        it.countryCode == defaultLang
+                                    }.countryCode.lowercase(),
+                                ),
+                            ),
+                        )
+                    },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.NumberPassword,
                         autoCorrect = true,
@@ -114,7 +138,7 @@ fun TogiCountryCodePicker(
                         keyboardController?.hideSoftwareKeyboard()
                     }),
                     leadingIcon = {
-                        if (!bottomStyle)
+                        if (!bottomStyle) {
                             Row {
                                 Column {
                                     TogiCodeDialog(
@@ -122,12 +146,15 @@ fun TogiCountryCodePicker(
                                             phoneCode = it.countryPhoneCode
                                             defaultLang = it.countryCode
                                         },
-                                        defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
+                                        defaultSelectedCountry = getLibCountries.single {
+                                            it.countryCode == defaultLang
+                                        },
                                         showCountryCode = showCountryCode,
-                                        showFlag = showCountryFlag
+                                        showFlag = showCountryFlag,
                                     )
                                 }
                             }
+                        }
                     },
                     trailingIcon = {
                         IconButton(onClick = {
@@ -137,18 +164,21 @@ fun TogiCountryCodePicker(
                             Icon(
                                 imageVector = Icons.Filled.Clear,
                                 contentDescription = "Clear",
-                                tint = if (getErrorStatus()) Color.Red else MaterialTheme.colors.onSurface
+                                tint = if (getErrorStatus()) Color.Red else MaterialTheme.colors.onSurface,
                             )
                         }
-                    })
+                    },
+                )
             }
-            if (getErrorStatus()) Text(
-                text = stringResource(id = R.string.invalid_number),
-                color = MaterialTheme.colors.error,
-                style = MaterialTheme.typography.caption,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(top = 0.8.dp)
-            )
+            if (getErrorStatus()) {
+                Text(
+                    text = stringResource(id = R.string.invalid_number),
+                    color = MaterialTheme.colors.error,
+                    style = MaterialTheme.typography.caption,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(top = 0.8.dp),
+                )
+            }
         }
     }
 }
@@ -167,7 +197,9 @@ fun getErrorStatus(): Boolean {
 
 fun isPhoneNumber(): Boolean {
     val check = com.togitech.ccp.data.utils.checkPhoneNumber(
-        phone = phoneNumberState, fullPhoneNumber = fullNumberState, countryCode = countryCodeState
+        phone = phoneNumberState,
+        fullPhoneNumber = fullNumberState,
+        countryCode = countryCodeState,
     )
     checkNumberState = check
     return check

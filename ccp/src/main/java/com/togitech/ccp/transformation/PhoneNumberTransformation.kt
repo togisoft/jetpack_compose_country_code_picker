@@ -7,7 +7,7 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import java.util.*
+import java.util.Locale
 
 class PhoneNumberTransformation(countryCode: String = Locale.getDefault().country) :
     VisualTransformation {
@@ -33,9 +33,9 @@ class PhoneNumberTransformation(countryCode: String = Locale.getDefault().countr
                 override fun transformedToOriginal(offset: Int): Int {
                     return transformation.transformedToOriginal[offset]
                 }
-            })
+            },
+        )
     }
-
 
     private fun reformat(s: CharSequence, cursor: Int): Transformation {
         phoneNumberFormatter.clear()
@@ -89,6 +89,6 @@ class PhoneNumberTransformation(countryCode: String = Locale.getDefault().countr
     private data class Transformation(
         val formatted: String?,
         val originalToTransformed: List<Int>,
-        val transformedToOriginal: List<Int>
+        val transformedToOriginal: List<Int>,
     )
 }
