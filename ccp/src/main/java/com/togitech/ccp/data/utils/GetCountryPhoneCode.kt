@@ -2,7 +2,9 @@ package com.togitech.ccp.data.utils
 
 import com.togitech.ccp.data.CountryData
 
-var getLibCountries: List<CountryData> = mutableListOf(
+val unitedStates = CountryData("us", "+1", "United States")
+
+var getLibCountries: List<CountryData> = listOf(
     CountryData("ad", "+376", "Andorra"),
     CountryData("ae", "+971", "United Arab Emirates (UAE)"),
     CountryData("af", "+93", "Afghanistan"),
@@ -101,11 +103,11 @@ var getLibCountries: List<CountryData> = mutableListOf(
     CountryData("ie", "+353", "Ireland"),
     CountryData("il", "+972", "Israel"),
     CountryData("im", "+44", "Isle Of Man"),
-    CountryData("is", "+354", "Iceland"),
     CountryData("in", "+91", "India"),
     CountryData("io", "+246", "British Indian Ocean Territory"),
     CountryData("iq", "+964", "Iraq"),
     CountryData("ir", "+98", "Iran, Islamic Republic Of"),
+    CountryData("is", "+354", "Iceland"),
     CountryData("it", "+39", "Italy"),
     CountryData("je", "+44", "Jersey "),
     CountryData("jm", "+1", "Jamaica"),
@@ -226,7 +228,7 @@ var getLibCountries: List<CountryData> = mutableListOf(
     CountryData("tz", "+255", "Tanzania, United Republic Of"),
     CountryData("ua", "+380", "Ukraine"),
     CountryData("ug", "+256", "Uganda"),
-    CountryData("us", "+1", "United States"),
+    unitedStates,
     CountryData("uy", "+598", "Uruguay"),
     CountryData("uz", "+998", "Uzbekistan"),
     CountryData("va", "+379", "Holy See (vatican City State)"),
@@ -245,3 +247,5 @@ var getLibCountries: List<CountryData> = mutableListOf(
     CountryData("zm", "+260", "Zambia"),
     CountryData("zw", "+263", "Zimbabwe"),
 )
+
+val countryDataMap: Map<String, CountryData> = getLibCountries.associateBy { it.countryCode }

@@ -33,10 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.R
+import com.togitech.ccp.data.CountryData
+import com.togitech.ccp.data.utils.countryDataMap
 import com.togitech.ccp.data.utils.getDefaultLangCode
 import com.togitech.ccp.data.utils.getDefaultPhoneCode
-import com.togitech.ccp.data.utils.getLibCountries
 import com.togitech.ccp.data.utils.getNumberHint
+import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 
 private var fullNumberState: String by mutableStateOf("")
@@ -57,6 +59,8 @@ fun TogiCountryCodePicker(
     unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
     cursorColor: Color = MaterialTheme.colors.primary,
     bottomStyle: Boolean = false,
+    fallbackCountry: CountryData = unitedStates,
+    showPlaceholder: Boolean = true,
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -86,9 +90,10 @@ fun TogiCountryCodePicker(
                         phoneCode = it.countryPhoneCode
                         defaultLang = it.countryCode
                     },
-                    defaultSelectedCountry = getLibCountries.single {
-                        it.countryCode == defaultLang
-                    },
+                    defaultSelectedCountry = countryDataMap.getOrDefault(
+                        defaultLang,
+                        fallbackCountry,
+                    ),
                     showCountryCode = showCountryCode,
                     showFlag = showCountryFlag,
                     showCountryName = true,
@@ -115,20 +120,24 @@ fun TogiCountryCodePicker(
                         cursorColor = cursorColor,
                     ),
                     visualTransformation = PhoneNumberTransformation(
-                        getLibCountries.single {
-                            it.countryCode == defaultLang
-                        }.countryCode.uppercase(),
+                        countryDataMap.getOrDefault(
+                            defaultLang,
+                            fallbackCountry,
+                        ).countryCode.uppercase(),
                     ),
                     placeholder = {
-                        Text(
-                            text = stringResource(
-                                id = getNumberHint(
-                                    getLibCountries.single {
-                                        it.countryCode == defaultLang
-                                    }.countryCode.lowercase(),
+                        if (showPlaceholder) {
+                            Text(
+                                text = stringResource(
+                                    id = getNumberHint(
+                                        countryDataMap.getOrDefault(
+                                            defaultLang,
+                                            fallbackCountry
+                                        ).countryCode.lowercase(),
+                                    ),
                                 ),
-                            ),
-                        )
+                            )
+                        } else null
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.NumberPassword,
@@ -146,9 +155,10 @@ fun TogiCountryCodePicker(
                                             phoneCode = it.countryPhoneCode
                                             defaultLang = it.countryCode
                                         },
-                                        defaultSelectedCountry = getLibCountries.single {
-                                            it.countryCode == defaultLang
-                                        },
+                                        defaultSelectedCountry = countryDataMap.getOrDefault(
+                                            defaultLang,
+                                            fallbackCountry,
+                                        ),
                                         showCountryCode = showCountryCode,
                                         showFlag = showCountryFlag,
                                     )

@@ -1,6 +1,7 @@
 package com.togitech.togii
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -28,14 +29,16 @@ class MainActivity : ComponentActivity() {
                 val systemUiController = rememberSystemUiController()
                 systemUiController.setStatusBarColor(
                     color = MaterialTheme.colors.primary,
-                    false
+                    false,
                 )
                 systemUiController.setSystemBarsColor(
                     color = MaterialTheme.colors.primary,
-                    false
+                    false,
                 )
-                Scaffold(modifier = Modifier.fillMaxSize(),
-                    topBar = { TopAppBar(title = { Text(text = "Togisoft") }) }) { top ->
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = { TopAppBar(title = { Text(text = "Togisoft") }) },
+                ) { top ->
                     top.calculateTopPadding()
                     Surface(modifier = Modifier.fillMaxSize()) {
                         CountryCodePick()
@@ -46,7 +49,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun CountryCodePick() {
     Column(
@@ -54,19 +56,22 @@ fun CountryCodePick() {
             .verticalScroll(rememberScrollState())
             .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         val phoneNumber = rememberSaveable { mutableStateOf("") }
         val fullPhoneNumber = rememberSaveable { mutableStateOf("") }
         val onlyPhoneNumber = rememberSaveable { mutableStateOf("") }
 
         TogiCountryCodePicker(
             text = phoneNumber.value,
-            onValueChange = { phoneNumber.value = it },
+            onValueChange = {
+                Log.d("CCP", "onValueChange: $it")
+                phoneNumber.value = it
+            },
             unfocusedBorderColor = MaterialTheme.colors.primary,
-            bottomStyle =false,
-            shape = RoundedCornerShape(24.dp)
+            bottomStyle = false,
+            shape = RoundedCornerShape(24.dp),
+            showPlaceholder = false,
         )
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = {
@@ -83,12 +88,12 @@ fun CountryCodePick() {
 
         Text(
             text = "Full Phone Number: ${fullPhoneNumber.value}",
-            color = if (getErrorStatus()) Color.Red else Color.Green
+            color = if (getErrorStatus()) Color.Red else Color.Green,
         )
 
         Text(
             text = "Only Phone Number: ${onlyPhoneNumber.value}",
-            color = if (getErrorStatus()) Color.Red else Color.Green
+            color = if (getErrorStatus()) Color.Red else Color.Green,
         )
     }
 }

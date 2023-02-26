@@ -1,21 +1,20 @@
 package com.togitech.ccp.utils
 
 import android.content.Context
+import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.countryNames
 
-fun List<CountryData>.searchCountry(key: String,context: Context): MutableList<CountryData> {
+fun List<CountryData>.searchCountry(key: String, context: Context): List<CountryData> =
     this.filter {
-        countryNames.getOrNull(countryCode)?.let { countryName ->
+        countryNames[it.countryCode]?.let { countryName ->
             context.resources.getString(countryName).lowercase().contains(key.lowercase())
         } ?: false
-        val countryName = context.resources.getString(countryNames(it.countryCode))
     }
-    val tempList = mutableListOf<CountryData>()
-    this.forEach {
-        if (context.resources.getString(getCountryName(it.countryCode)).lowercase().contains(key.lowercase())) {
-            tempList.add(it)
-        }
+
+fun List<CountryData>.sortedByLocalizedName(context: Context): List<CountryData> =
+    this.sortedBy {
+        context.resources.getString(
+            countryNames.getOrDefault(it.countryCode, R.string.unkown),
+        )
     }
-    return tempList
-}

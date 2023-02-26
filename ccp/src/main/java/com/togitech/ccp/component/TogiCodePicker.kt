@@ -27,9 +27,9 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,12 +50,13 @@ import com.togitech.ccp.data.utils.countryCodeToEmojiFlag
 import com.togitech.ccp.data.utils.countryNames
 import com.togitech.ccp.data.utils.getLibCountries
 import com.togitech.ccp.utils.searchCountry
+import com.togitech.ccp.utils.sortedByLocalizedName
 
 @Composable
 fun TogiCodeDialog(
     modifier: Modifier = Modifier,
     padding: Dp = 15.dp,
-    defaultSelectedCountry: CountryData = getLibCountries.first(),
+    defaultSelectedCountry: CountryData,
     showCountryCode: Boolean = true,
     pickedCountry: (CountryData) -> Unit,
     showFlag: Boolean = true,
@@ -64,7 +65,6 @@ fun TogiCodeDialog(
 ) {
     val context = LocalContext.current
 
-    val countryList: List<CountryData> = getLibCountries
     var isPickCountry by remember {
         mutableStateOf(defaultSelectedCountry)
     }
@@ -85,9 +85,17 @@ fun TogiCodeDialog(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (showCountryCode) {
+            if (showCountryCode || showFlag) {
                 Text(
-                    text = if (showFlag) countryCodeToEmojiFlag(isPickCountry.countryCode) else "" + isPickCountry.countryPhoneCode,
+                    text = if (showFlag) {
+                        countryCodeToEmojiFlag(isPickCountry.countryCode)
+                    } else {
+                        ""
+                    } + if (showCountryCode) {
+                        isPickCountry.countryPhoneCode
+                    } else {
+                        ""
+                    },
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 6.dp),
                     fontSize = 18.sp,
@@ -98,7 +106,10 @@ fun TogiCodeDialog(
             if (showCountryName) {
                 Text(
                     text = stringResource(
-                        id = countryNames.getOrDefault(isPickCountry.countryCode.lowercase(), R.string.unkown),
+                        id = countryNames.getOrDefault(
+                            isPickCountry.countryCode.lowercase(),
+                            R.string.unkown,
+                        ),
                     ),
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 6.dp),
@@ -111,7 +122,6 @@ fun TogiCodeDialog(
 
         if (isOpenDialog) {
             CountryDialog(
-                countryList = countryList,
                 onDismissRequest = { isOpenDialog = false },
                 context = context,
                 dialogStatus = isOpenDialog,
@@ -128,12 +138,13 @@ fun TogiCodeDialog(
 @Composable
 fun CountryDialog(
     modifier: Modifier = Modifier,
-    countryList: List<CountryData>,
+    countryList: List<CountryData> = getLibCountries,
     onDismissRequest: () -> Unit,
     onSelected: (item: CountryData) -> Unit,
     context: Context,
     dialogStatus: Boolean,
 ) {
+    val filteredCountryList = countryList.sortedByLocalizedName(context)
     var searchValue by remember { mutableStateOf("") }
     if (!dialogStatus) searchValue = ""
 
@@ -171,9 +182,9 @@ fun CountryDialog(
                         LazyColumn {
                             items(
                                 if (searchValue.isEmpty()) {
-                                    countryList
+                                    filteredCountryList
                                 } else {
-                                    countryList.searchCountry(
+                                    filteredCountryList.searchCountry(
                                         searchValue,
                                         context,
                                     )
@@ -193,7 +204,7 @@ fun CountryDialog(
                                                 id = countryNames.getOrDefault(
                                                     countryItem.countryCode.lowercase(),
                                                     R.string.unkown,
-                                                )
+                                                ),
                                             ),
                                         modifier = Modifier.padding(horizontal = 18.dp),
                                         fontSize = 14.sp,
