@@ -61,7 +61,7 @@ fun TogiCodeDialog(
     pickedCountry: (CountryData) -> Unit,
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
-
+    includeOnly: Set<String>?,
 ) {
     val context = LocalContext.current
 
@@ -130,6 +130,7 @@ fun TogiCodeDialog(
                     isPickCountry = countryItem
                     isOpenDialog = false
                 },
+                includeOnly = includeOnly,
             )
         }
     }
@@ -143,8 +144,13 @@ fun CountryDialog(
     onSelected: (item: CountryData) -> Unit,
     context: Context,
     dialogStatus: Boolean,
+    includeOnly: Set<String>?,
 ) {
-    val filteredCountryList = countryList.sortedByLocalizedName(context)
+    val filteredCountryList = countryList.sortedByLocalizedName(context).let { countries ->
+        includeOnly?.map { it.lowercase() }?.let { includeLowercase ->
+            countries.filter { it.countryCode in includeLowercase }
+        } ?: countries
+    }
     var searchValue by remember { mutableStateOf("") }
     if (!dialogStatus) searchValue = ""
 
