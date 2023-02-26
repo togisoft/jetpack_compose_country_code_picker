@@ -6,11 +6,20 @@ import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.countryNames
 
 fun List<CountryData>.searchCountry(key: String, context: Context): List<CountryData> =
-    this.filter {
+    this.mapNotNull {
         countryNames[it.countryCode]?.let { countryName ->
-            context.resources.getString(countryName).lowercase().contains(key.lowercase())
-        } ?: false
+            val localizedCountryName = context.resources.getString(countryName).lowercase()
+            if (localizedCountryName.contains(key.lowercase())) {
+                it to localizedCountryName
+            } else {
+                null
+            }
+        }
     }
+        .partition { it.second.startsWith(key.lowercase()) }
+        .let { (startWith, contains) ->
+            startWith.map { it.first } + contains.map { it.first }
+        }
 
 fun List<CountryData>.sortedByLocalizedName(context: Context): List<CountryData> =
     this.sortedBy {
