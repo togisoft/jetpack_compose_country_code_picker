@@ -61,7 +61,7 @@ fun TogiCountryCodePicker(
     bottomStyle: Boolean = false,
     fallbackCountry: CountryData = unitedStates,
     showPlaceholder: Boolean = true,
-    includeOnly: Set<String>? = null
+    includeOnly: Set<String>? = null,
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -134,12 +134,14 @@ fun TogiCountryCodePicker(
                                     id = getNumberHint(
                                         countryDataMap.getOrDefault(
                                             defaultLang,
-                                            fallbackCountry
+                                            fallbackCountry,
                                         ).countryCode.lowercase(),
                                     ),
                                 ),
                             )
-                        } else null
+                        } else {
+                            null
+                        }
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.NumberPassword,

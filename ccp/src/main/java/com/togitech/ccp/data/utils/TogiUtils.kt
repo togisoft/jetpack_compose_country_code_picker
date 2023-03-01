@@ -23,7 +23,7 @@ fun getDefaultPhoneCode(context: Context): String {
 
 fun checkPhoneNumber(phone: String, fullPhoneNumber: String, countryCode: String): Boolean {
     val number: Phonenumber.PhoneNumber?
-    if (phone.length > 6) {
+    if (phone.length > 4) {
         return try {
             number = PhoneNumberUtil.getInstance().parse(
                 fullPhoneNumber,

@@ -4,7 +4,7 @@ import com.togitech.ccp.data.CountryData
 
 val unitedStates = CountryData("us", "+1", "United States")
 
-var getLibCountries: List<CountryData> = listOf(
+val getLibCountries: List<CountryData> = listOf(
     CountryData("ad", "+376", "Andorra"),
     CountryData("ae", "+971", "United Arab Emirates (UAE)"),
     CountryData("af", "+93", "Afghanistan"),
