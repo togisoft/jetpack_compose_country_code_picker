@@ -48,9 +48,9 @@ private var countryCodeState: String by mutableStateOf("")
 
 @Composable
 fun TogiCountryCodePicker(
-    modifier: Modifier = Modifier,
     text: String,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(24.dp),
     color: Color = MaterialTheme.colors.background,
     showCountryCode: Boolean = true,
@@ -87,7 +87,7 @@ fun TogiCountryCodePicker(
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
             if (bottomStyle) {
                 TogiCodeDialog(
-                    pickedCountry = {
+                    onCountryChange = {
                         phoneCode = it.countryPhoneCode
                         defaultLang = it.countryCode
                     },
@@ -155,7 +155,7 @@ fun TogiCountryCodePicker(
                             Row {
                                 Column {
                                     TogiCodeDialog(
-                                        pickedCountry = {
+                                        onCountryChange = {
                                             phoneCode = it.countryPhoneCode
                                             defaultLang = it.countryCode
                                         },

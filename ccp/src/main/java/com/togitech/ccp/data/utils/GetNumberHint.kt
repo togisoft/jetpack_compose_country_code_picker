@@ -2,6 +2,7 @@ package com.togitech.ccp.data.utils
 
 import com.togitech.ccp.R
 
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 fun getNumberHint(countryName: String): Int {
     return when (countryName) {
         "ad" -> R.string.andorra_hint

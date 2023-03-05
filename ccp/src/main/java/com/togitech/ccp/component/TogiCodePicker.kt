@@ -54,14 +54,14 @@ import com.togitech.ccp.utils.sortedByLocalizedName
 
 @Composable
 fun TogiCodeDialog(
+    defaultSelectedCountry: CountryData,
+    includeOnly: Set<String>?,
+    onCountryChange: (CountryData) -> Unit,
     modifier: Modifier = Modifier,
     padding: Dp = 15.dp,
-    defaultSelectedCountry: CountryData,
     showCountryCode: Boolean = true,
-    pickedCountry: (CountryData) -> Unit,
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
-    includeOnly: Set<String>?,
 ) {
     val context = LocalContext.current
 
@@ -125,8 +125,8 @@ fun TogiCodeDialog(
                 onDismissRequest = { isOpenDialog = false },
                 context = context,
                 dialogStatus = isOpenDialog,
-                onSelected = { countryItem ->
-                    pickedCountry(countryItem)
+                onSelect = { countryItem ->
+                    onCountryChange(countryItem)
                     isPickCountry = countryItem
                     isOpenDialog = false
                 },
@@ -138,13 +138,12 @@ fun TogiCodeDialog(
 
 @Composable
 fun CountryDialog(
-    modifier: Modifier = Modifier,
-    countryList: List<CountryData> = getLibCountries,
-    onDismissRequest: () -> Unit,
-    onSelected: (item: CountryData) -> Unit,
+    onSelect: (item: CountryData) -> Unit,
     context: Context,
     dialogStatus: Boolean,
     includeOnly: Set<String>?,
+    onDismissRequest: () -> Unit,
+    countryList: List<CountryData> = getLibCountries,
 ) {
     val filteredCountryList = countryList.sortedByLocalizedName(context).let { countries ->
         includeOnly?.map { it.lowercase() }?.let { includeLowercase ->
@@ -200,7 +199,7 @@ fun CountryDialog(
                                     Modifier
                                         .padding(18.dp)
                                         .fillMaxWidth()
-                                        .clickable(onClick = { onSelected(countryItem) }),
+                                        .clickable(onClick = { onSelect(countryItem) }),
                                     horizontalArrangement = Arrangement.Start,
                                     verticalAlignment = Alignment.CenterVertically,
                                 ) {
@@ -228,12 +227,12 @@ fun CountryDialog(
 
 @Composable
 private fun SearchTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
-    value: String,
-    textColor: Color = Color.Black,
-    onValueChange: (String) -> Unit,
     hint: String = stringResource(id = R.string.search),
     fontSize: TextUnit = MaterialTheme.typography.body2.fontSize,
 ) {
