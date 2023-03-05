@@ -10,8 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.togitech.ccp.component.*
 import com.togitech.togii.ui.theme.TogiiTheme
+import kotlinx.collections.immutable.persistentSetOf
 
 class MainActivity : ComponentActivity() {
 
@@ -61,40 +64,31 @@ fun CountryCodePick() {
         val phoneNumber = rememberSaveable { mutableStateOf("") }
         val fullPhoneNumber = rememberSaveable { mutableStateOf("") }
         val onlyPhoneNumber = rememberSaveable { mutableStateOf("") }
+        var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
         TogiCountryCodePicker(
             text = phoneNumber.value,
-            onValueChange = {
-                Log.d("CCP", "onValueChange: $it")
-                phoneNumber.value = it
+            onValueChange = { updatePhoneNumber, isValid ->
+                Log.d("CCP", "onValueChange: $updatePhoneNumber -> $isValid")
+                phoneNumber.value = updatePhoneNumber
+                isNumberValid = isValid
             },
             unfocusedBorderColor = MaterialTheme.colors.primary,
             bottomStyle = false,
             shape = RoundedCornerShape(24.dp),
             showPlaceholder = false,
-            includeOnly = setOf("AU", "AT", "BE", "BR", "BG", "CA", "CL", "CN", "CO", "CK", "CZ", "DK", "DO", "EC", "EG", "EE", "FI", "FR", "DE", "HK", "HU", "IN", "IE", "IL", "IT", "JP", "JE", "LT", "LU", "MY", "MX", "MA", "MM", "NL", "NZ", "NO", "PE", "PH", "PL", "PT", "PR", "RO", "RU", "SG", "ZA", "ES", "SE", "CH", "TW", "TH", "UA", "AE", "GB", "US", "UY"),
+            includeOnly = persistentSetOf("AU", "AT", "BE", "BR", "BG", "CA", "CL", "CN", "CO", "CK", "CZ", "DK", "DO", "EC", "EG", "EE", "FI", "FR", "DE", "HK", "HU", "IN", "IE", "IL", "IT", "JP", "JE", "LT", "LU", "MY", "MX", "MA", "MM", "NL", "NZ", "NO", "PE", "PH", "PL", "PT", "PR", "RO", "RU", "SG", "ZA", "ES", "SE", "CH", "TW", "TH", "UA", "AE", "GB", "US", "UY"),
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = {
-            if (!isPhoneNumber()) {
-                fullPhoneNumber.value = getFullPhoneNumber()
-                onlyPhoneNumber.value = getOnlyPhoneNumber()
-            } else {
-                fullPhoneNumber.value = "Error"
-                onlyPhoneNumber.value = "Error"
-            }
-        }) {
-            Text(text = "Check")
-        }
 
         Text(
             text = "Full Phone Number: ${fullPhoneNumber.value}",
-            color = if (getErrorStatus()) Color.Red else Color.Green,
+            color = if (!isNumberValid) Color.Red else Color.Green,
         )
 
         Text(
             text = "Only Phone Number: ${onlyPhoneNumber.value}",
-            color = if (getErrorStatus()) Color.Red else Color.Green,
+            color = if (!isNumberValid) Color.Red else Color.Green,
         )
     }
 }

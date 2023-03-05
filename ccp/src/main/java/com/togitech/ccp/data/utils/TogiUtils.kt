@@ -15,15 +15,15 @@ fun getDefaultLangCode(context: Context): String {
     return countryCode.ifBlank { defaultLocale }
 }
 
-fun getDefaultPhoneCode(context: Context): String {
+fun getDefaultPhoneCode(context: Context, fallbackCountryData: CountryData): String {
     val defaultCountry = getDefaultLangCode(context)
     val defaultCode: CountryData = getLibCountries.first { it.countryCode == defaultCountry }
-    return defaultCode.countryPhoneCode.ifBlank { "+90" }
+    return defaultCode.countryPhoneCode.ifBlank { fallbackCountryData.countryPhoneCode }
 }
 
-fun checkPhoneNumber(phone: String, fullPhoneNumber: String, countryCode: String): Boolean {
+fun checkPhoneNumber(fullPhoneNumber: String, countryCode: String): Boolean {
     val number: Phonenumber.PhoneNumber?
-    if (phone.length > 4) {
+    if (fullPhoneNumber.length > 6) {
         return try {
             number = PhoneNumberUtil.getInstance().parse(
                 fullPhoneNumber,
