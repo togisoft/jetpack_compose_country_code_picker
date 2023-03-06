@@ -104,6 +104,10 @@ fun TogiCountryCodePicker(
             TogiCodeDialog(
                 onCountryChange = {
                     langAndCode = it.countryCode to it.countryPhoneCode
+                    isNumberValid = isPhoneNumberValid(
+                        fullPhoneNumber = langAndCode.second + phoneNumber,
+                    )
+                    onValueChange(langAndCode.second to phoneNumber, isNumberValid)
                 },
                 defaultSelectedCountry = countryDataMap.getOrDefault(
                     langAndCode.first,

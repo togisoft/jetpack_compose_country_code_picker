@@ -12,20 +12,21 @@ import java.util.Locale
 class PhoneNumberTransformation(countryCode: String = Locale.getDefault().country) :
     VisualTransformation {
 
-    private val phoneNumberFormatter =
+    private val phoneNumberFormatter by lazy {
         PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode)
+    }
 
     override fun filter(text: AnnotatedString): TransformedText {
-        val transformation =
-            reformat(text, Selection.getSelectionEnd(text))
+        val transformation = reformat(text, Selection.getSelectionEnd(text))
 
         return TransformedText(
             AnnotatedString(transformation.formatted ?: ""),
             object : OffsetMapping {
+                @Suppress("TooGenericExceptionCaught", "SwallowedException")
                 override fun originalToTransformed(offset: Int): Int {
                     return try {
                         transformation.originalToTransformed[offset]
-                    } catch (ex: Exception) {
+                    } catch (ex: IndexOutOfBoundsException) {
                         transformation.transformedToOriginal.lastIndex
                     }
                 }
