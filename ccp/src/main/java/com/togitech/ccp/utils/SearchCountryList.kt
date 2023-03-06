@@ -24,6 +24,6 @@ fun List<CountryData>.searchCountry(key: String, context: Context): List<Country
 fun List<CountryData>.sortedByLocalizedName(context: Context): List<CountryData> =
     this.sortedBy {
         context.resources.getString(
-            countryNames.getOrDefault(it.countryCode, R.string.unkown),
+            countryNames.getOrDefault(it.countryCode, R.string.unknown),
         )
     }

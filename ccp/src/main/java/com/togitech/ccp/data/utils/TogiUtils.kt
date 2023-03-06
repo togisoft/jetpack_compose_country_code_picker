@@ -7,7 +7,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import com.togitech.ccp.data.CountryData
 
-fun getDefaultLangCode(context: Context): String {
+private fun getDefaultLangCode(context: Context): String {
     val localeCode: TelephonyManager =
         context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
     val countryCode = localeCode.networkCountryIso
@@ -15,10 +15,12 @@ fun getDefaultLangCode(context: Context): String {
     return countryCode.ifBlank { defaultLocale }
 }
 
-fun getDefaultPhoneCode(context: Context, fallbackCountryData: CountryData): String {
+fun getDefaultPhoneCode(context: Context, fallbackCountryData: CountryData): Pair<String, String> {
     val defaultCountry = getDefaultLangCode(context)
     val defaultCode: CountryData = getLibCountries.first { it.countryCode == defaultCountry }
-    return defaultCode.countryPhoneCode.ifBlank { fallbackCountryData.countryPhoneCode }
+    return defaultCountry to defaultCode.countryPhoneCode.ifBlank {
+        fallbackCountryData.countryPhoneCode
+    }
 }
 
 fun checkPhoneNumber(fullPhoneNumber: String, countryCode: String): Boolean {

@@ -12,6 +12,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.checkPhoneNumber
 import com.togitech.ccp.data.utils.countryDataMap
-import com.togitech.ccp.data.utils.getDefaultLangCode
 import com.togitech.ccp.data.utils.getDefaultPhoneCode
 import com.togitech.ccp.data.utils.getNumberHint
 import com.togitech.ccp.data.utils.unitedStates
@@ -50,29 +51,26 @@ fun TogiCountryCodePicker(
     fallbackCountry: CountryData = unitedStates,
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
-    clearIcon: ImageVector? = null,
+    clearIcon: ImageVector? = Icons.Filled.Clear,
 ) {
     val context = LocalContext.current
-    var phoneNumberState by rememberSaveable { mutableStateOf("") }
+    var phoneNumber by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalTextInputService.current
-    var phoneCode by rememberSaveable {
+    var langAndCode by rememberSaveable {
         mutableStateOf(getDefaultPhoneCode(context, fallbackCountry))
     }
-    var defaultLang by rememberSaveable {
-        mutableStateOf(getDefaultLangCode(context))
-    }
+
     var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
-    var countryCodeState: String by rememberSaveable { mutableStateOf(defaultLang) }
 
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
         shape = shape,
-        value = phoneNumberState,
+        value = phoneNumber,
         onValueChange = {
-            phoneNumberState = it
+            phoneNumber = it
             if (text != it) {
-                isNumberValid = checkPhoneNumber(phoneCode + phoneNumberState, countryCodeState)
-                onValueChange(phoneCode to phoneNumberState, isNumberValid)
+                isNumberValid = checkPhoneNumber(langAndCode.second + phoneNumber, langAndCode.second)
+                onValueChange(langAndCode.second to phoneNumber, isNumberValid)
             }
         },
         singleLine = true,
@@ -83,7 +81,7 @@ fun TogiCountryCodePicker(
         ),
         visualTransformation = PhoneNumberTransformation(
             countryDataMap.getOrDefault(
-                defaultLang,
+                langAndCode.first,
                 fallbackCountry,
             ).countryCode.uppercase(),
         ),
@@ -93,7 +91,7 @@ fun TogiCountryCodePicker(
                     text = stringResource(
                         id = getNumberHint(
                             countryDataMap.getOrDefault(
-                                defaultLang,
+                                langAndCode.first,
                                 fallbackCountry,
                             ).countryCode.lowercase(),
                         ),
@@ -113,11 +111,10 @@ fun TogiCountryCodePicker(
                 Column {
                     TogiCodeDialog(
                         onCountryChange = {
-                            phoneCode = it.countryPhoneCode
-                            defaultLang = it.countryCode
+                            langAndCode = it.countryCode to it.countryPhoneCode
                         },
                         defaultSelectedCountry = countryDataMap.getOrDefault(
-                            defaultLang,
+                            langAndCode.first,
                             fallbackCountry,
                         ),
                         showCountryCode = showCountryCode,
@@ -131,9 +128,9 @@ fun TogiCountryCodePicker(
             clearIcon?.let {
                 IconButton(
                     onClick = {
-                        phoneNumberState = ""
+                        phoneNumber = ""
                         isNumberValid = false
-                        onValueChange(phoneCode to phoneNumberState, isNumberValid)
+                        onValueChange(langAndCode.second to phoneNumber, isNumberValid)
                     },
                 ) {
                     Icon(

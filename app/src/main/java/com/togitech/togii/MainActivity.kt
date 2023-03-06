@@ -9,6 +9,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,18 +65,19 @@ fun CountryCodePick() {
     ) {
         val phoneNumber = rememberSaveable { mutableStateOf("") }
         val fullPhoneNumber = rememberSaveable { mutableStateOf("") }
-        val onlyPhoneNumber = rememberSaveable { mutableStateOf("") }
         var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
+
+        Spacer(modifier = Modifier.height(100.dp))
 
         TogiCountryCodePicker(
             text = phoneNumber.value,
-            onValueChange = { updatePhoneNumber, isValid ->
-                Log.d("CCP", "onValueChange: $updatePhoneNumber -> $isValid")
-                phoneNumber.value = updatePhoneNumber
+            onValueChange = { (code, phone), isValid ->
+                Log.d("CCP", "onValueChange: $code $phone -> $isValid")
+                phoneNumber.value = phone
+                fullPhoneNumber.value = code + phone
                 isNumberValid = isValid
             },
             unfocusedBorderColor = MaterialTheme.colors.primary,
-            bottomStyle = false,
             shape = RoundedCornerShape(24.dp),
             showPlaceholder = false,
             includeOnly = persistentSetOf("AU", "AT", "BE", "BR", "BG", "CA", "CL", "CN", "CO", "CK", "CZ", "DK", "DO", "EC", "EG", "EE", "FI", "FR", "DE", "HK", "HU", "IN", "IE", "IL", "IT", "JP", "JE", "LT", "LU", "MY", "MX", "MA", "MM", "NL", "NZ", "NO", "PE", "PH", "PL", "PT", "PR", "RO", "RU", "SG", "ZA", "ES", "SE", "CH", "TW", "TH", "UA", "AE", "GB", "US", "UY"),
@@ -87,8 +90,9 @@ fun CountryCodePick() {
         )
 
         Text(
-            text = "Only Phone Number: ${onlyPhoneNumber.value}",
+            text = "Only Phone Number: ${phoneNumber.value}",
             color = if (!isNumberValid) Color.Red else Color.Green,
         )
+        Spacer(modifier = Modifier.weight(1f))
     }
 }

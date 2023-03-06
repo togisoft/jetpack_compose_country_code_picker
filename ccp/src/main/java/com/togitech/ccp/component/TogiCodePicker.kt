@@ -51,11 +51,14 @@ import com.togitech.ccp.data.utils.countryNames
 import com.togitech.ccp.data.utils.getLibCountries
 import com.togitech.ccp.utils.searchCountry
 import com.togitech.ccp.utils.sortedByLocalizedName
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun TogiCodeDialog(
     defaultSelectedCountry: CountryData,
-    includeOnly: Set<String>?,
+    includeOnly: ImmutableSet<String>?,
     onCountryChange: (CountryData) -> Unit,
     modifier: Modifier = Modifier,
     padding: Dp = 15.dp,
@@ -108,7 +111,7 @@ fun TogiCodeDialog(
                     text = stringResource(
                         id = countryNames.getOrDefault(
                             isPickCountry.countryCode.lowercase(),
-                            R.string.unkown,
+                            R.string.unknown,
                         ),
                     ),
                     fontWeight = FontWeight.Bold,
@@ -121,6 +124,12 @@ fun TogiCodeDialog(
         }
 
         if (isOpenDialog) {
+            val filteredCountryList = getLibCountries.sortedByLocalizedName(context)
+                .let { countries ->
+                    includeOnly?.map { it.lowercase() }?.let { includeLowercase ->
+                        countries.filter { it.countryCode in includeLowercase }
+                    } ?: countries
+                }
             CountryDialog(
                 onDismissRequest = { isOpenDialog = false },
                 context = context,
@@ -130,7 +139,7 @@ fun TogiCodeDialog(
                     isPickCountry = countryItem
                     isOpenDialog = false
                 },
-                includeOnly = includeOnly,
+                filteredCountryList = filteredCountryList.toImmutableList(),
             )
         }
     }
@@ -141,15 +150,9 @@ fun CountryDialog(
     onSelect: (item: CountryData) -> Unit,
     context: Context,
     dialogStatus: Boolean,
-    includeOnly: Set<String>?,
+    filteredCountryList: ImmutableList<CountryData>,
     onDismissRequest: () -> Unit,
-    countryList: List<CountryData> = getLibCountries,
 ) {
-    val filteredCountryList = countryList.sortedByLocalizedName(context).let { countries ->
-        includeOnly?.map { it.lowercase() }?.let { includeLowercase ->
-            countries.filter { it.countryCode in includeLowercase }
-        } ?: countries
-    }
     var searchValue by remember { mutableStateOf("") }
     if (!dialogStatus) searchValue = ""
 
@@ -208,7 +211,7 @@ fun CountryDialog(
                                             stringResource(
                                                 id = countryNames.getOrDefault(
                                                     countryItem.countryCode.lowercase(),
-                                                    R.string.unkown,
+                                                    R.string.unknown,
                                                 ),
                                             ),
                                         modifier = Modifier.padding(horizontal = 18.dp),
