@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.data.CountryData
-import com.togitech.ccp.data.utils.checkPhoneNumber
+import com.togitech.ccp.data.utils.isPhoneNumberValid
 import com.togitech.ccp.data.utils.countryDataMap
 import com.togitech.ccp.data.utils.getDefaultPhoneCode
 import com.togitech.ccp.data.utils.getNumberHint
@@ -70,9 +70,8 @@ fun TogiCountryCodePicker(
         onValueChange = {
             phoneNumber = it
             if (text != it) {
-                isNumberValid = checkPhoneNumber(
+                isNumberValid = isPhoneNumberValid(
                     fullPhoneNumber = langAndCode.second + phoneNumber,
-                    countryCode = langAndCode.second
                 )
                 onValueChange(langAndCode.second to phoneNumber, isNumberValid)
             }
