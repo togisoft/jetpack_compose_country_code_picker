@@ -85,7 +85,6 @@ fun CountryCodePick() {
                 fullPhoneNumber.value = code + phone
                 isNumberValid = isValid
             },
-            unfocusedBorderColor = MaterialTheme.colors.primary,
             shape = RoundedCornerShape(24.dp),
             showPlaceholder = false,
             includeOnly = persistentSetOf("AU", "AT", "BE", "BR", "BG", "CA", "CL", "CN", "CO", "CK", "CZ", "DK", "DO", "EC", "EG", "EE", "FI", "FR", "DE", "HK", "HU", "IN", "IE", "IL", "IT", "JP", "JE", "LT", "LU", "MY", "MX", "MA", "MM", "NL", "NZ", "NO", "PE", "PH", "PL", "PT", "PR", "RO", "RU", "SG", "ZA", "ES", "SE", "CH", "TW", "TH", "UA", "AE", "GB", "US", "UY"),

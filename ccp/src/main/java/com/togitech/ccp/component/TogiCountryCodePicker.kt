@@ -9,18 +9,32 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.composed
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.stringResource
@@ -28,16 +42,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.data.CountryData
-import com.togitech.ccp.data.utils.isPhoneNumberValid
 import com.togitech.ccp.data.utils.countryDataMap
 import com.togitech.ccp.data.utils.getDefaultPhoneCode
 import com.togitech.ccp.data.utils.getNumberHint
+import com.togitech.ccp.data.utils.isPhoneNumberValid
 import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
 
 private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
 @Composable
 fun TogiCountryCodePicker(
@@ -47,15 +62,15 @@ fun TogiCountryCodePicker(
     shape: Shape = DEFAULT_TEXT_FIELD_SHAPE,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
-    focusedBorderColor: Color = MaterialTheme.colors.primary,
-    unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
-    cursorColor: Color = MaterialTheme.colors.primary,
+    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
     fallbackCountry: CountryData = unitedStates,
     showPlaceholder: Boolean = true,
     includeOnly: ImmutableSet<String>? = null,
     clearIcon: ImageVector? = Icons.Filled.Clear,
 ) {
     val context = LocalContext.current
+    val focusRequester = remember { FocusRequester() }
+
     var phoneNumber by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalTextInputService.current
     var langAndCode by rememberSaveable {
@@ -64,7 +79,13 @@ fun TogiCountryCodePicker(
     var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .autofill(
+                autofillTypes = listOf(AutofillType.PhoneNumberNational),
+                onFill = { phoneNumber = it },
+            )
+            .focusRequester(focusRequester = focusRequester),
         shape = shape,
         value = phoneNumber,
         onValueChange = {
@@ -77,11 +98,8 @@ fun TogiCountryCodePicker(
             }
         },
         singleLine = true,
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = if (!isNumberValid) Color.Red else focusedBorderColor,
-            unfocusedBorderColor = if (!isNumberValid) Color.Red else unfocusedBorderColor,
-            cursorColor = cursorColor,
-        ),
+        isError = !isNumberValid,
+        colors = colors,
         visualTransformation = PhoneNumberTransformation(
             countryDataMap.getOrDefault(
                 langAndCode.first,
@@ -94,7 +112,7 @@ fun TogiCountryCodePicker(
             }
         },
         keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.NumberPassword,
+            keyboardType = KeyboardType.Phone,
             autoCorrect = true,
         ),
         keyboardActions = KeyboardActions(onDone = {
@@ -136,6 +154,10 @@ fun TogiCountryCodePicker(
             }
         },
     )
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 }
 
 @Composable
@@ -153,6 +175,28 @@ private fun PlaceholderNumberHint(
             ),
         ),
     )
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+fun Modifier.autofill(
+    autofillTypes: List<AutofillType>,
+    onFill: ((String) -> Unit),
+) = composed {
+    val autofill = LocalAutofill.current
+    val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
+    LocalAutofillTree.current += autofillNode
+
+    this.onGloballyPositioned {
+        autofillNode.boundingBox = it.boundsInWindow()
+    }.onFocusChanged { focusState ->
+        autofill?.run {
+            if (focusState.isFocused) {
+                requestAutofillForNode(autofillNode)
+            } else {
+                cancelAutofillForNode(autofillNode)
+            }
+        }
+    }
 }
 
 @Preview
