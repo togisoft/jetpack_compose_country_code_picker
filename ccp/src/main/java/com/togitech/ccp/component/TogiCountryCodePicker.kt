@@ -1,7 +1,5 @@
 package com.togitech.ccp.component
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -27,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.checkPhoneNumber
@@ -37,12 +36,15 @@ import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
 
+private val DEFAULT_ROUNDING = 24.dp
+
+@Suppress("LongMethod")
 @Composable
 fun TogiCountryCodePicker(
     text: String,
     onValueChange: (Pair<String, String>, Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(24.dp),
+    shape: Shape = RoundedCornerShape(DEFAULT_ROUNDING),
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
     focusedBorderColor: Color = MaterialTheme.colors.primary,
@@ -59,7 +61,6 @@ fun TogiCountryCodePicker(
     var langAndCode by rememberSaveable {
         mutableStateOf(getDefaultPhoneCode(context, fallbackCountry))
     }
-
     var isNumberValid: Boolean by rememberSaveable { mutableStateOf(false) }
 
     OutlinedTextField(
@@ -69,7 +70,10 @@ fun TogiCountryCodePicker(
         onValueChange = {
             phoneNumber = it
             if (text != it) {
-                isNumberValid = checkPhoneNumber(langAndCode.second + phoneNumber, langAndCode.second)
+                isNumberValid = checkPhoneNumber(
+                    fullPhoneNumber = langAndCode.second + phoneNumber,
+                    countryCode = langAndCode.second
+                )
                 onValueChange(langAndCode.second to phoneNumber, isNumberValid)
             }
         },
@@ -87,16 +91,7 @@ fun TogiCountryCodePicker(
         ),
         placeholder = {
             if (showPlaceholder) {
-                Text(
-                    text = stringResource(
-                        id = getNumberHint(
-                            countryDataMap.getOrDefault(
-                                langAndCode.first,
-                                fallbackCountry,
-                            ).countryCode.lowercase(),
-                        ),
-                    ),
-                )
+                PlaceholderNumberHint(langAndCode, fallbackCountry)
             }
         },
         keyboardOptions = KeyboardOptions.Default.copy(
@@ -107,22 +102,18 @@ fun TogiCountryCodePicker(
             keyboardController?.hideSoftwareKeyboard()
         }),
         leadingIcon = {
-            Row {
-                Column {
-                    TogiCodeDialog(
-                        onCountryChange = {
-                            langAndCode = it.countryCode to it.countryPhoneCode
-                        },
-                        defaultSelectedCountry = countryDataMap.getOrDefault(
-                            langAndCode.first,
-                            fallbackCountry,
-                        ),
-                        showCountryCode = showCountryCode,
-                        showFlag = showCountryFlag,
-                        includeOnly = includeOnly,
-                    )
-                }
-            }
+            TogiCodeDialog(
+                onCountryChange = {
+                    langAndCode = it.countryCode to it.countryPhoneCode
+                },
+                defaultSelectedCountry = countryDataMap.getOrDefault(
+                    langAndCode.first,
+                    fallbackCountry,
+                ),
+                showCountryCode = showCountryCode,
+                showFlag = showCountryFlag,
+                includeOnly = includeOnly,
+            )
         },
         trailingIcon = {
             clearIcon?.let {
@@ -141,5 +132,35 @@ fun TogiCountryCodePicker(
                 }
             }
         },
+    )
+}
+
+@Composable
+private fun PlaceholderNumberHint(
+    langAndCode: Pair<String, String>,
+    fallbackCountry: CountryData,
+) {
+    Text(
+        text = stringResource(
+            id = getNumberHint(
+                countryDataMap.getOrDefault(
+                    langAndCode.first,
+                    fallbackCountry,
+                ).countryCode.lowercase(),
+            ),
+        ),
+    )
+}
+
+@Preview
+@Composable
+fun TogiCountryCodePickerPreview() {
+    TogiCountryCodePicker(
+        text = "",
+        onValueChange = { _, _ -> },
+        showCountryCode = true,
+        showCountryFlag = true,
+        showPlaceholder = true,
+        includeOnly = null,
     )
 }
