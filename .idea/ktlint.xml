@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="KtlintProjectConfiguration">
-    <enableKtlint>false</enableKtlint>
+    <androidMode>true</androidMode>
     <disabledRules>
       <list>
         <option value="argument-list-wrapping" />
       </list>
     </disabledRules>
+    <editorConfigPath>$PROJECT_DIR$/.editorconfig</editorConfigPath>
   </component>
 </project>
