@@ -117,6 +117,7 @@ fun CountryDialog(
                                 countryItem = countryItem,
                                 rowFontSize = rowFontSize,
                             )
+                            Divider()
                         }
                     }
                 }
@@ -179,7 +180,6 @@ private fun CountryRowItem(
             overflow = TextOverflow.Ellipsis,
         )
     }
-    Divider()
 }
 
 @Composable
