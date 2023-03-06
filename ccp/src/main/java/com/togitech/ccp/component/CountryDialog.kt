@@ -3,7 +3,6 @@ package com.togitech.ccp.component
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -58,67 +56,50 @@ import kotlinx.collections.immutable.toImmutableList
 
 private val DEFAULT_ROUNDING = 10.dp
 private val DEFAULT_ROW_PADDING = 16.dp
+private const val ROW_PADDING_VERTICAL_SCALING = 1.1f
 private val DEFAULT_ROW_FONT_SIZE = 16.sp
+private val SEARCH_ICON_PADDING = 5.dp
 
+@Suppress("ModifierDefaultValue")
 @Composable
 fun CountryDialog(
-    dialogClipShape: Shape = RoundedCornerShape(DEFAULT_ROUNDING),
+    onDismissRequest: () -> Unit,
+    onSelect: (item: CountryData) -> Unit,
+    filteredCountryList: ImmutableList<CountryData>,
+    context: Context,
+    modifier: Modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DEFAULT_ROUNDING)),
     rowPadding: Dp = DEFAULT_ROW_PADDING,
     rowFontSize: TextUnit = DEFAULT_ROW_FONT_SIZE,
-    onSelect: (item: CountryData) -> Unit,
-    context: Context,
-    filteredCountryList: ImmutableList<CountryData>,
-    onDismissRequest: () -> Unit,
 ) {
     var searchValue by rememberSaveable { mutableStateOf("") }
 
     Dialog(
         onDismissRequest = onDismissRequest,
         content = {
+            @Suppress("ReusedModifierInstance")
             Surface(
                 color = MaterialTheme.colors.surface,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(dialogClipShape),
+                modifier = modifier,
             ) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Text(
-                            text = "Choose your country",
-                            style = MaterialTheme.typography.h6,
-                            color = MaterialTheme.colors.onSurface,
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-                        IconButton(
-                            onClick = { onDismissRequest() },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Filled.Clear,
-                                contentDescription = "Close",
-                                tint = MaterialTheme.colors.onSurface,
-                            )
-                        }
-                    }
+                    HeaderRow(onDismissRequest)
                     SearchTextField(
                         value = searchValue,
                         onValueChange = { searchValue = it },
                         textColor = MaterialTheme.colors.onSurface,
-                        fontSize = 16.sp,
+                        fontSize = DEFAULT_ROW_FONT_SIZE,
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Filled.Search,
-                                contentDescription = "Search",
+                                contentDescription = stringResource(id = R.string.search),
                                 tint = MaterialTheme.colors.onSurface,
-                                modifier = Modifier.padding(horizontal = 3.dp),
+                                modifier = Modifier.padding(horizontal = SEARCH_ICON_PADDING),
                             )
                         },
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(50))
-                            .height(40.dp),
+                        modifier = Modifier.padding(DEFAULT_ROW_PADDING),
                     )
-                    Spacer(modifier = Modifier.height(10.dp))
-
+                    Spacer(modifier = Modifier.height(DEFAULT_ROW_PADDING))
+                    Divider()
                     LazyColumn {
                         items(
                             if (searchValue.isEmpty()) {
@@ -130,35 +111,75 @@ fun CountryDialog(
                                 )
                             },
                         ) { countryItem ->
-                            Row(
-                                Modifier
-                                    .padding(horizontal = rowPadding, vertical = rowPadding * 1.1f)
-                                    .fillMaxWidth()
-                                    .clickable(onClick = { onSelect(countryItem) }),
-                                horizontalArrangement = Arrangement.Start,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Text(
-                                    text = countryCodeToEmojiFlag(countryItem.countryCode) + "  " +
-                                        stringResource(
-                                            id = countryNames.getOrDefault(
-                                                countryItem.countryCode.lowercase(),
-                                                R.string.unknown,
-                                            ),
-                                        ),
-                                    color = MaterialTheme.colors.onSurface,
-                                    fontSize = rowFontSize,
-                                    fontFamily = FontFamily.SansSerif,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
-                            }
-                            Divider()
+                            CountryRowItem(
+                                rowPadding = rowPadding,
+                                onSelect = { onSelect(countryItem) },
+                                countryItem = countryItem,
+                                rowFontSize = rowFontSize,
+                            )
                         }
                     }
                 }
             }
         },
     )
+}
+
+@Composable
+private fun HeaderRow(onDismissRequest: () -> Unit) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Spacer(modifier = Modifier.width(DEFAULT_ROW_PADDING))
+        Text(
+            text = stringResource(id = R.string.select_country),
+            style = MaterialTheme.typography.h6,
+            color = MaterialTheme.colors.onSurface,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(
+            onClick = { onDismissRequest() },
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Clear,
+                contentDescription = "Close",
+                tint = MaterialTheme.colors.onSurface,
+            )
+        }
+    }
+}
+
+@Composable
+private fun CountryRowItem(
+    rowPadding: Dp,
+    onSelect: () -> Unit,
+    countryItem: CountryData,
+    rowFontSize: TextUnit,
+) {
+    Row(
+        Modifier
+            .padding(
+                horizontal = rowPadding,
+                vertical = rowPadding * ROW_PADDING_VERTICAL_SCALING,
+            )
+            .fillMaxWidth()
+            .clickable(onClick = { onSelect() }),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = countryCodeToEmojiFlag(countryItem.countryCode) + "  " +
+                stringResource(
+                    id = countryNames.getOrDefault(
+                        countryItem.countryCode.lowercase(),
+                        R.string.unknown,
+                    ),
+                ),
+            color = MaterialTheme.colors.onSurface,
+            fontSize = rowFontSize,
+            fontFamily = FontFamily.SansSerif,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+    Divider()
 }
 
 @Composable
@@ -174,7 +195,7 @@ private fun SearchTextField(
     BasicTextField(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 18.dp),
+            .padding(horizontal = DEFAULT_ROW_PADDING),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
@@ -207,7 +228,7 @@ private fun SearchTextField(
 
 @Preview
 @Composable
-fun CountryDialogPreview() {
+private fun CountryDialogPreview() {
     CountryDialog(
         onSelect = {},
         context = LocalContext.current,

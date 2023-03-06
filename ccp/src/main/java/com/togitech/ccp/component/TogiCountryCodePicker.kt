@@ -36,7 +36,7 @@ import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
 
-private val DEFAULT_ROUNDING = 24.dp
+private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 
 @Suppress("LongMethod")
 @Composable
@@ -44,7 +44,7 @@ fun TogiCountryCodePicker(
     text: String,
     onValueChange: (Pair<String, String>, Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(DEFAULT_ROUNDING),
+    shape: Shape = DEFAULT_TEXT_FIELD_SHAPE,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
     focusedBorderColor: Color = MaterialTheme.colors.primary,
@@ -154,7 +154,7 @@ private fun PlaceholderNumberHint(
 
 @Preview
 @Composable
-fun TogiCountryCodePickerPreview() {
+private fun TogiCountryCodePickerPreview() {
     TogiCountryCodePicker(
         text = "",
         onValueChange = { _, _ -> },

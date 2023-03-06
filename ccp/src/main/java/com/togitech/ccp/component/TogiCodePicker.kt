@@ -20,21 +20,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.countryCodeToEmojiFlag
-import com.togitech.ccp.data.utils.countryNames
 import com.togitech.ccp.data.utils.getLibCountries
 import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.utils.sortedByLocalizedName
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
+
+private val DEFAULT_PADDING = 10.dp
 
 @Composable
 fun TogiCodeDialog(
@@ -42,10 +40,9 @@ fun TogiCodeDialog(
     includeOnly: ImmutableSet<String>?,
     onCountryChange: (CountryData) -> Unit,
     modifier: Modifier = Modifier,
-    padding: Dp = 15.dp,
+    padding: Dp = DEFAULT_PADDING,
     showCountryCode: Boolean = true,
     showFlag: Boolean = true,
-    showCountryName: Boolean = false,
     textColor: Color = MaterialTheme.colors.onSurface,
 ) {
     val context = LocalContext.current
@@ -67,9 +64,8 @@ fun TogiCodeDialog(
         CodePickerRow(
             showCountryCode = showCountryCode,
             showFlag = showFlag,
-            isPickCountry = country,
+            country = country,
             textColor = textColor,
-            showCountryName = showCountryName,
         )
 
         if (isOpenDialog) {
@@ -97,9 +93,9 @@ fun TogiCodeDialog(
 private fun CodePickerRow(
     showCountryCode: Boolean,
     showFlag: Boolean,
-    isPickCountry: CountryData,
+    country: CountryData,
     textColor: Color,
-    showCountryName: Boolean,
+    fontWeight: FontWeight = FontWeight.Medium,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -107,10 +103,14 @@ private fun CodePickerRow(
     ) {
         if (showCountryCode || showFlag) {
             Text(
-                text = EmojiCodeText(showFlag, isPickCountry, showCountryCode),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 6.dp),
-                fontSize = 18.sp,
+                text = emojiCodeText(
+                    showFlag = showFlag,
+                    isPickCountry = country,
+                    showCountryCode = showCountryCode,
+                ),
+                modifier = Modifier.padding(start = DEFAULT_PADDING),
+                fontStyle = MaterialTheme.typography.body1.fontStyle,
+                fontWeight = fontWeight,
                 color = textColor,
             )
             Icon(
@@ -119,26 +119,11 @@ private fun CodePickerRow(
                 tint = textColor,
             )
         }
-        if (showCountryName) {
-            Text(
-                text = stringResource(
-                    id = countryNames.getOrDefault(
-                        isPickCountry.countryCode.lowercase(),
-                        R.string.unknown,
-                    ),
-                ),
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(start = 6.dp),
-                fontSize = 18.sp,
-                color = MaterialTheme.colors.onSurface,
-            )
-            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
-        }
     }
 }
 
 @Composable
-private fun EmojiCodeText(
+private fun emojiCodeText(
     showFlag: Boolean,
     isPickCountry: CountryData,
     showCountryCode: Boolean,
@@ -148,7 +133,7 @@ private fun EmojiCodeText(
 
 @Preview
 @Composable
-fun TogiCodeDialogPreview() {
+private fun TogiCodeDialogPreview() {
     TogiCodeDialog(
         defaultSelectedCountry = unitedStates,
         includeOnly = null,
