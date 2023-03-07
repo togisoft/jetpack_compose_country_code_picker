@@ -41,20 +41,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
 import com.togitech.ccp.data.utils.countryDataMap
 import com.togitech.ccp.data.utils.getDefaultPhoneCode
-import com.togitech.ccp.data.utils.getNumberHint
 import com.togitech.ccp.data.utils.isPhoneNumberValid
+import com.togitech.ccp.data.utils.numberHint
 import com.togitech.ccp.data.utils.unitedStates
 import com.togitech.ccp.transformation.PhoneNumberTransformation
 import kotlinx.collections.immutable.ImmutableSet
 
 private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Suppress("LongMethod")
-@Composable
 /**
  * @param text The text to be displayed in the text field.
  * @param onValueChange Called when the text in the text field changes.
@@ -71,6 +69,9 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
  * Set to null to include all supported countries.
  * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
  */
+@OptIn(ExperimentalComposeUiApi::class)
+@Suppress("LongMethod")
+@Composable
 fun TogiCountryCodePicker(
     text: String,
     onValueChange: (Pair<String, String>, Boolean) -> Unit,
@@ -183,11 +184,9 @@ private fun PlaceholderNumberHint(
 ) {
     Text(
         text = stringResource(
-            id = getNumberHint(
-                countryDataMap.getOrDefault(
-                    langAndCode.first,
-                    fallbackCountry,
-                ).countryCode.lowercase(),
+            id = numberHint.getOrDefault(
+                countryDataMap.getOrDefault(langAndCode.first, fallbackCountry).countryCode,
+                R.string.unknown,
             ),
         ),
     )
