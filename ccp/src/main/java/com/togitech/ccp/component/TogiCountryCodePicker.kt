@@ -55,6 +55,22 @@ private val DEFAULT_TEXT_FIELD_SHAPE = RoundedCornerShape(24.dp)
 @OptIn(ExperimentalComposeUiApi::class)
 @Suppress("LongMethod")
 @Composable
+/**
+ * @param text The text to be displayed in the text field.
+ * @param onValueChange Called when the text in the text field changes.
+ * The first parameter is string pair of (country code, phone number) and the second parameter is
+ * a boolean indicating whether the phone number is valid.
+ * @param modifier Modifier to be applied to the inner OutlinedTextField.
+ * @param shape Shape of the text field.
+ * @param showCountryCode Whether to show the country code in the text field.
+ * @param showCountryFlag Whether to show the country flag in the text field.
+ * @param colors Colors to be used for the text field.
+ * @param fallbackCountry The country to be used as a fallback if the user's country cannot be determined.
+ * @param showPlaceholder Whether to show the placeholder number in the text field.
+ * @param includeOnly A set of 2 digit country codes to be included in the list of countries.
+ * Set to null to include all supported countries.
+ * @param clearIcon The icon to be used for the clear button. Set to null to disable the clear button.
+ */
 fun TogiCountryCodePicker(
     text: String,
     onValueChange: (Pair<String, String>, Boolean) -> Unit,

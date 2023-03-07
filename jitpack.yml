@@ -1,0 +1,4 @@
+jdk:
+  - openjdk11
+install:
+  - ./gradlew :ccp:assemble :ccp:publishToMavenLocal

@@ -15,6 +15,6 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "Togii"
+rootProject.name = "Country Code Picker"
 include ':app'
 include ':ccp'
