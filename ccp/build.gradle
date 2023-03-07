@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'maven-publish'
+    id "io.gitlab.arturbosch.detekt" version "1.22.0"
 }
 
 group 'com.togitech'
@@ -13,7 +14,7 @@ android {
     namespace = 'com.togitech.ccp'
 
     defaultConfig {
-        minSdk 21
+        minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -50,6 +51,7 @@ android {
 }
 
 dependencies {
+    api "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -58,8 +60,17 @@ dependencies {
     implementation "androidx.activity:activity-compose:$activity_compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.7'
+    api 'com.googlecode.libphonenumber:libphonenumber:8.13.7'
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_tooling_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_tooling_version"
 
+    detektPlugins("ru.kode:detekt-rules-compose:1.2.2")
+    detektPlugins("com.twitter.compose.rules:detekt:0.0.26")
+}
+
+detekt {
+    config = files(project.rootProject.file("detekt.yml"))
+    allRules = true
 }
 
 afterEvaluate {

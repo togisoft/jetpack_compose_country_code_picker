@@ -243,7 +243,7 @@
     <string name="south_africa">South Africa</string>
     <string name="zambia">Zambia</string>
     <string name="zimbabwe">Zimbabwe</string>
-    <string name="unkown">Unkown</string>
+    <string name="unknown">Unknown</string>
     <string name="search">Search...</string>
     <string name="afganistan_hint" translatable="false">70 123 4567</string>
     <string name="algeria_hint" translatable="false">551 23 45 67</string>
@@ -466,6 +466,7 @@
     <string name="burundi_hint" translatable="false">29 12 34 56</string>
     <string name="cote_dlvoire_hint" translatable="false">02 12 34 56</string>
     <string name="germany_hint" translatable="false">0171 123456</string>
+    <string name="gibraltar_hint" translatable="false">200 52200</string>
     <string name="finland_hint" translatable="false">042 123456</string>
     <string name="fiji_hint" translatable="false">665 1234</string>
     <string name="israil_hint" translatable="false">03-123-4567</string>
@@ -479,5 +480,4 @@
     <string name="slovenia_hint" translatable="false">070 123 456</string>
     <string name="select_country">Select Country</string>
     <string name="invalid_number">Invalid Phone Number</string>
-
 </resources>

@@ -2,6 +2,7 @@ package com.togitech.ccp.data.utils
 
 import com.togitech.ccp.R
 
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 fun getNumberHint(countryName: String): Int {
     return when (countryName) {
         "ad" -> R.string.andorra_hint
@@ -83,7 +84,7 @@ fun getNumberHint(countryName: String): Int {
         "gf" -> R.string.french_guyana_hint
         "gg" -> R.string.guernsey_hint
         "gh" -> R.string.ghana_hint
-        "gi" -> R.string.unkown
+        "gi" -> R.string.gibraltar_hint
         "gl" -> R.string.greenland_hint
         "gm" -> R.string.gambia_hint
         "gn" -> R.string.guinea_hint
@@ -246,6 +247,6 @@ fun getNumberHint(countryName: String): Int {
         "za" -> R.string.south_africa_hint
         "zm" -> R.string.zambia_hint
         "zw" -> R.string.zimbabwe_hint
-        else -> R.string.unkown
+        else -> R.string.unknown
     }
 }

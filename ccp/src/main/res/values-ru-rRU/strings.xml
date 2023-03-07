@@ -243,7 +243,7 @@
     <string name="south_africa">Южноафриканская республика</string>
     <string name="zambia">Замбия</string>
     <string name="zimbabwe">Зимбабве</string>
-    <string name="unkown">Неизвестный</string>
+    <string name="unknown">Неизвестный</string>
     <string name="search">Поиск…</string>
     <string name="afganistan_hint" translatable="false">70 123 4567</string>
     <string name="algeria_hint" translatable="false">551 23 45 67</string>

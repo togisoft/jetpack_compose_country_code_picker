@@ -3,36 +3,55 @@ package com.togitech.ccp.data.utils
 import android.content.Context
 import android.telephony.TelephonyManager
 import androidx.compose.ui.text.intl.Locale
+import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import com.togitech.ccp.data.CountryData
 
-fun getDefaultLangCode(context: Context): String {
-    val localeCode: TelephonyManager =
-        context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-    val countryCode = localeCode.networkCountryIso
-    val defaultLocale = Locale.current.language
-    return countryCode.ifBlank { defaultLocale }
-}
+private const val MIN_PHONE_LENGTH = 6
+private const val EMOJI_UNICODE = 0x1F1A5
 
-fun getDefaultPhoneCode(context: Context): String {
-    val defaultCountry = getDefaultLangCode(context)
-    val defaultCode: CountryData = getLibCountries.first { it.countryCode == defaultCountry }
-    return defaultCode.countryPhoneCode.ifBlank { "+90" }
-}
+private val phoneUtil: PhoneNumberUtil by lazy { PhoneNumberUtil.getInstance() }
 
-fun checkPhoneNumber(phone: String, fullPhoneNumber: String, countryCode: String): Boolean {
-    val number: Phonenumber.PhoneNumber?
-    if (phone.length > 6) {
-        return try {
-            number = PhoneNumberUtil.getInstance().parse(
-                fullPhoneNumber,
-                Phonenumber.PhoneNumber.CountryCodeSource.UNSPECIFIED.name
-            )
-            !PhoneNumberUtil.getInstance().isValidNumberForRegion(number, countryCode.uppercase())
-        } catch (ex: Exception) {
-            true
-        }
+@Suppress("SwallowedException")
+private fun getDefaultLangCode(context: Context): String =
+    try {
+        context.telephonyManager?.networkCountryIso
+    } catch (ex: java.lang.AssertionError) {
+        null
+    }.let { countryCode ->
+        countryCode.takeIf { !it.isNullOrBlank() } ?: Locale.current.language
     }
-    return true
+
+fun getDefaultPhoneCode(context: Context, fallbackCountryData: CountryData): Pair<String, String> {
+    val defaultCountry = getDefaultLangCode(context)
+    val defaultCode: CountryData? = getLibCountries.firstOrNull { it.countryCode == defaultCountry }
+    return defaultCountry to (
+        defaultCode?.countryPhoneCode.takeIf {
+            !it.isNullOrBlank()
+        } ?: fallbackCountryData.countryPhoneCode
+        )
 }
+
+fun isPhoneNumberValid(fullPhoneNumber: String): Boolean =
+    if (fullPhoneNumber.length > MIN_PHONE_LENGTH) {
+        try {
+            phoneUtil.isValidNumber(phoneUtil.parse(fullPhoneNumber, null))
+        } catch (ex: NumberParseException) {
+            false
+        }
+    } else {
+        false
+    }
+
+fun countryCodeToEmojiFlag(countryCode: String): String =
+    countryCode
+        .uppercase()
+        .map { char ->
+            Character.codePointAt("$char", 0) + EMOJI_UNICODE
+        }
+        .joinToString("") {
+            String(Character.toChars(it))
+        }
+
+private val Context.telephonyManager: TelephonyManager?
+    get() = getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager

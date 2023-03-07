@@ -243,7 +243,7 @@
     <string name="south_africa">جنوب أفريقيا</string>
     <string name="zambia">زامبيا</string>
     <string name="zimbabwe">زيمبابوي</string>
-    <string name="unkown">غير معروف</string>
+    <string name="unknown">غير معروف</string>
     <string name="search">بحث</string>
     <string name="afganistan_hint" translatable="false">70 123 4567</string>
     <string name="algeria_hint" translatable="false">551 23 45 67</string>

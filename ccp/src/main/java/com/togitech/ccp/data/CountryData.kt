@@ -1,13 +1,10 @@
 package com.togitech.ccp.data
 
-import com.togitech.ccp.R
-import java.util.*
-
+@Suppress("UnusedPrivateMember")
 data class CountryData(
-    private var cCodes: String,
-    val countryPhoneCode: String = "+90",
-    val cNames:String = "tr",
-    val flagResID: Int = R.drawable.tr
+    private val cCodes: String,
+    val countryPhoneCode: String,
+    private val cNames: String, // bookkeeping only
 ) {
-    val countryCode = cCodes.lowercase(Locale.getDefault())
+    val countryCode = cCodes.lowercase()
 }
