@@ -78,16 +78,12 @@ fun CountryCodePick() {
 
         TogiCountryCodePicker(
             text = phoneNumber.value,
-            modifier = Modifier.padding(20.dp),
             onValueChange = { (code, phone), isValid ->
                 Log.d("CCP", "onValueChange: $code $phone -> $isValid")
                 phoneNumber.value = phone
                 fullPhoneNumber.value = code + phone
                 isNumberValid = isValid
             },
-            shape = RoundedCornerShape(24.dp),
-            showPlaceholder = false,
-            includeOnly = persistentSetOf("AU", "AT", "BE", "BR", "BG", "CA", "CL", "CN", "CO", "CK", "CZ", "DK", "DO", "EC", "EG", "EE", "FI", "FR", "DE", "HK", "HU", "IN", "IE", "IL", "IT", "JP", "JE", "LT", "LU", "MY", "MX", "MA", "MM", "NL", "NZ", "NO", "PE", "PH", "PL", "PT", "PR", "RO", "RU", "SG", "ZA", "ES", "SE", "CH", "TW", "TH", "UA", "AE", "GB", "US", "UY"),
         )
         Spacer(modifier = Modifier.height(10.dp))
 

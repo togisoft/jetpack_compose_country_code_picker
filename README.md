@@ -1,143 +1,109 @@
-# Jetpack Compose Country Code Picker
+# Jetpack Compose Country Code Picker Emoji
 
-Jetpack Compose Country Code Picker
+[![Android CI](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/actions/workflows/android.yml/badge.svg)](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/actions/workflows/android.yml)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=jump-sdk_jetpack_compose_country_code_picker_emoji&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=jump-sdk_jetpack_compose_country_code_picker_emoji)
 
-<a href="https://www.buymeacoffee.com/togitech" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+* 😍 Emoji flag icons - beautiful and minimizes library size
+* 🤔 Country numbers hints (option to disable)
+* 🔢 Phone number visualTransformation (Automatic number formatting)
+* 🇺🇳 Automatic country recognition (detection by sim card if sim card is inserted)
+* ⚙️ Advanced customization options (see usage below)
+* 🏁 Fast! Flattened layouts and immutable collections prevent unwanted recomposition.
+* 🗣 Multilingual:
+	* Turkish
+	* English
+	* Italian
+	* Arabic
+	* Russian
+	* Dutch
+	* Spanish
+	* Somali
 
-<h1>Updated</h1>
 
-If you are looking for Country Phone Code Picker for Jetpack Compose you can use the package.
+## Screenshots
 
-* Country numbers hints
-* Phone number visualTransformation (Automatic number formatting)
-* Automatic country recognition (detection by sim card if sim card is inserted)
-* With TextField
-* Can Customize
-* Added language translations
-* Added clear text button
-* Dialog changed
-
-Languages:
-
-* Turkish
-* English
-* Italian
-* Arabic
-* Russian
-* Dutch
-
-For language support, you can translate the file below and send it to me.
-https://github.com/togisoft/jetpack_compose_country_code_picker/blob/master/ccp/src/main/res/values/strings.xml
-
-<h3>Screenshots</h3>
 <div class="row">
   <img src="screenshots/1.png" width="300"> 
   <img src="screenshots/2.png" width="300"> 
   <img src="screenshots/3.png" width="300"> 
   <img src="screenshots/4.png" width="300"> 
-  <img src="screenshots/5.png" width="300"> 
-  <img src="screenshots/6.png" width="300"> 
-  <img src="screenshots/7.png" width="300"> 
-  <img src="screenshots/8.png" width="300"> 
  </div>
 
 
 
-<h3> USAGE </h3>
-
-```kotlin
-@Composable
-fun TogiCountryCodePicker(
-    modifier: Modifier = Modifier,
-    text: String,
-    onValueChange: (String) -> Unit,
-    shape: Shape = RoundedCornerShape(24.dp),
-    color: Color = MaterialTheme.colors.background,
-    showCountryCode: Boolean = true,
-    showCountryFlag: Boolean = true,
-    focusedBorderColor: Color = MaterialTheme.colors.primary,
-    unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
-    cursorColor: Color = MaterialTheme.colors.primary,
-    bottomStyle: Boolean = false
-)
-
-```  
-
-<h3> EXAMPLE </h3>
+## Usage
 
 
-```kotlin
-@Composable
-fun CountryCodePickerExample() {
-    Column(
-        modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+See MainActivity in the sample app for a full example.
 
-        val phoneNumber = rememberSaveable { mutableStateOf("") }
-        val fullPhoneNumber = rememberSaveable { mutableStateOf("") }
-        val onlyPhoneNumber = rememberSaveable { mutableStateOf("") }
-
+```kotlin 
         TogiCountryCodePicker(
             text = phoneNumber.value,
-            onValueChange = { phoneNumber.value = it },
-            unfocusedBorderColor = MaterialTheme.colors.primary,
-            bottomStyle =false, //  if true the text-field is below the country code selector at the top.
-            shape = RoundedCornerShape(24.dp)
+            onValueChange = { (code, phone), isValid ->
+                Log.d("CCP", "onValueChange: $code $phone -> $isValid")
+                phoneNumber.value = phone
+                fullPhoneNumber.value = code + phone
+                isNumberValid = isValid
+            },
         )
-        Spacer(modifier = Modifier.height(10.dp))
-        Button(onClick = {
-            if (!isPhoneNumber()) {
-                fullPhoneNumber.value = getFullPhoneNumber()
-                onlyPhoneNumber.value = getOnlyPhoneNumber()
-            } else {
-                fullPhoneNumber.value = "Error"
-                onlyPhoneNumber.value = "Error"
-            }
-        }) {
-            Text(text = "Check")
-        }
-
-        Text(
-            text = "Full Phone Number: ${fullPhoneNumber.value}",
-            color = if (getErrorStatus()) Color.Red else Color.Green
-        )
-
-        Text(
-            text = "Only Phone Number: ${onlyPhoneNumber.value}",
-            color = if (getErrorStatus()) Color.Red else Color.Green
-        )
-    }
-}
-
 ```
 
-<h3><- Functions -></h3>
 
-<b>getFullPhoneNumber()</b>  => Phone number with country code => return type <b>String</b> </br>
-<b>getOnlyPhoneNumber()</b> => Phone number only => return type <b>String</b> </br>
-<b>isPhoneNumber()</b> => Checks if the phone number is correct based on the country code => return type <b>Boolean</b>/</br>
+| Parameter       | Description                                                                                                                                                                                            |
+|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| text            | The text to be displayed in the text field.                                                                                                                                                            |
+| onValueChange   | Called when the text in the text field changes. The first parameter is string pair of (country code, phone number) and the second parameter is a boolean indicating whether the phone number is valid. |
+| modifier        | Modifier to be applied to the inner OutlinedTextField.                                                                                                                                                 |
+| shape           | Shape of the text field.                                                                                                                                                                               |
+| showCountryCode | Whether to show the country code in the text field.                                                                                                                                                    |
+| showCountryFlag | Whether to show the country flag in the text field.                                                                                                                                                    |
+| colors          | Colors to be used for the text field.                                                                                                                                                                  |
+| fallbackCountry | The country to be used as a fallback if the user's country cannot be determined.                                                                                                                       |
+| showPlaceholder | Whether to show the placeholder number in the text field.                                                                                                                                              |
+| includeOnly     | A set of 2 digit country codes to be included in the list of countries. Set to null to include all supported countries.                                                                                |
+| clearIcon       | The icon to be used for the clear button. Set to null to disable the clear button.                                                                                                                     |
 
-<h3> How to add in your project </h3>
 
-In the build.gradle add maven central repository
+## How to add in your project
+
+Step 1: In the build.gradle add Jitpack repository.
+
+In Groovy:
 
 ```groovy
     repositories {
-    maven { url 'https://jitpack.io' }
-}
+        maven { url 'https://jitpack.io' }
+    }
+
+```
+
+In Kts:
+
+```kotlin
+    repositories {
+        maven("https://jitpack.io")
+    }
 
 ```
 
 Step 2. Add the dependency
 
-```
-  dependencies {
-	    implementation 'com.github.togisoft:jetpack_compose_country_code_picker:1.1.4'
+```kotlin 
+	dependencies {
+	    implementation("com.github.jump-sdk:jetpack_compose_country_code_picker_emoji:2.0.1")
 	}  
-```    
+```
+
+## Contributing
+
+* [PRs](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/pulls) and [bug reports / feature requests](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/issues) are welcome!
+* This project is linted with [ktlint](https://github.com/pinterest/ktlint) and statically checked with [detekt](https://github.com/detekt/detekt)
+* Addtional checking done with [Twitter's](https://twitter.github.io/compose-rules/detekt/) and [appKODE's](https://github.com/appKODE/detekt-rules-compose) Jetpack Compose rules for Detekt
+* Treat other people with helpfulness, gratitude, and consideration! See the [JetBrains CoC](https://confluence.jetbrains.com/display/ALL/JetBrains+Open+Source+and+Community+Code+of+Conduct)
 
 
+## Based on [togisoft's Jetpack Compose Country Code Picker](https://github.com/togisoft/jetpack_compose_country_code_picker)
+
+All support goes to the original author
+
+<a href="https://www.buymeacoffee.com/togitech" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
