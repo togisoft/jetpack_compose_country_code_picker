@@ -24,5 +24,7 @@ jobs:
       run: chmod +x gradlew
     - name: Detekt
       run: ./gradlew :ccp:detekt
+    - name: Lint
+      run: ./gradlew :ccp:lint
     - name: Build with Gradle
       run: ./gradlew build

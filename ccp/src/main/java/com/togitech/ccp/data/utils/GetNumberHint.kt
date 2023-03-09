@@ -235,7 +235,7 @@ val numberHint: Map<String, Int> = mapOf(
     "vc" to R.string.saint_vincent_hint,
     "ve" to R.string.venezuela_hint,
     "vg" to R.string.virgin_islands_hint,
-    "vi" to R.string.virgin_island_us,
+    "vi" to R.string.virgin_islands_us,
     "vn" to R.string.vietnam_hint,
     "vu" to R.string.vanuatu_hint,
     "wf" to R.string.walli_and_fatuna_hint,

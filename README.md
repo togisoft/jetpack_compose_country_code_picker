@@ -18,7 +18,8 @@
 	* Dutch
 	* Spanish
 	* Somali
-
+	* French
+	* Chinese
 
 ## Screenshots
 
@@ -34,7 +35,7 @@
 ## Usage
 
 
-See MainActivity in the sample app for a full example.
+See [MainActivity in the sample app](https://github.com/jump-sdk/jetpack_compose_country_code_picker_emoji/blob/master/app/src/main/java/com/togitech/togii/MainActivity.kt) for a full example.
 
 ```kotlin 
         TogiCountryCodePicker(
