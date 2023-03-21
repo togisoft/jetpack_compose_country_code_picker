@@ -26,5 +26,7 @@ jobs:
       run: ./gradlew :ccp:detekt
     - name: Lint
       run: ./gradlew :ccp:lint
+    - name: Paparazzi snapshot test
+      run: ./gradlew :ccp:verifyPaparazziDebug
     - name: Build with Gradle
       run: ./gradlew build

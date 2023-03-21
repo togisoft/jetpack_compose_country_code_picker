@@ -4,6 +4,7 @@ plugins {
     id 'maven-publish'
     id "io.gitlab.arturbosch.detekt" version "1.22.0"
     id 'org.jetbrains.dokka'
+    id 'app.cash.paparazzi' version '1.2.0'
 }
 
 group 'com.togitech'
@@ -59,9 +60,9 @@ dependencies {
     implementation "androidx.activity:activity-compose:$activity_compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
-    api 'com.googlecode.libphonenumber:libphonenumber:8.13.7'
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_tooling_version"
-    debugImplementation "androidx.compose.ui:ui-tooling:$compose_tooling_version"
+    api 'com.googlecode.libphonenumber:libphonenumber:8.13.8'
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
     detektPlugins("ru.kode:detekt-rules-compose:1.2.2")
     detektPlugins("com.twitter.compose.rules:detekt:0.0.26")

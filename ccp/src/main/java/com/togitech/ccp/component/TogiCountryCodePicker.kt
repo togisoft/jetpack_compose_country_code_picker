@@ -1,5 +1,6 @@
 package com.togitech.ccp.component
 
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -14,7 +15,6 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -98,11 +98,13 @@ fun TogiCountryCodePicker(
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
+            .focusRequester(focusRequester = focusRequester)
             .autofill(
                 autofillTypes = listOf(AutofillType.PhoneNumberNational),
                 onFill = { phoneNumber = it },
+                focusRequester = focusRequester,
             )
-            .focusRequester(focusRequester = focusRequester),
+            .focusable(),
         shape = shape,
         value = phoneNumber,
         onValueChange = {
@@ -171,10 +173,6 @@ fun TogiCountryCodePicker(
             }
         },
     )
-
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
-    }
 }
 
 @Composable
@@ -195,14 +193,16 @@ private fun PlaceholderNumberHint(
 @OptIn(ExperimentalComposeUiApi::class)
 fun Modifier.autofill(
     autofillTypes: List<AutofillType>,
-    onFill: ((String) -> Unit),
-) = composed {
+    onFill: (String) -> Unit,
+    focusRequester: FocusRequester,
+) = this then composed {
     val autofill = LocalAutofill.current
     val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
     LocalAutofillTree.current += autofillNode
 
     this.onGloballyPositioned {
         autofillNode.boundingBox = it.boundsInWindow()
+        focusRequester.requestFocus()
     }.onFocusChanged { focusState ->
         autofill?.run {
             if (focusState.isFocused) {
