@@ -98,13 +98,13 @@ fun TogiCountryCodePicker(
     OutlinedTextField(
         modifier = modifier
             .fillMaxWidth()
-            .focusRequester(focusRequester = focusRequester)
+            .focusable()
             .autofill(
                 autofillTypes = listOf(AutofillType.PhoneNumberNational),
                 onFill = { phoneNumber = it },
                 focusRequester = focusRequester,
             )
-            .focusable(),
+            .focusRequester(focusRequester = focusRequester),
         shape = shape,
         value = phoneNumber,
         onValueChange = {
@@ -134,9 +134,11 @@ fun TogiCountryCodePicker(
             keyboardType = KeyboardType.Phone,
             autoCorrect = true,
         ),
-        keyboardActions = KeyboardActions(onDone = {
-            keyboardController?.hideSoftwareKeyboard()
-        }),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hideSoftwareKeyboard()
+            },
+        ),
         leadingIcon = {
             TogiCodeDialog(
                 onCountryChange = {
@@ -200,18 +202,20 @@ fun Modifier.autofill(
     val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
     LocalAutofillTree.current += autofillNode
 
-    this.onGloballyPositioned {
-        autofillNode.boundingBox = it.boundsInWindow()
-        focusRequester.requestFocus()
-    }.onFocusChanged { focusState ->
-        autofill?.run {
-            if (focusState.isFocused) {
-                requestAutofillForNode(autofillNode)
-            } else {
-                cancelAutofillForNode(autofillNode)
+    this
+        .onGloballyPositioned {
+            autofillNode.boundingBox = it.boundsInWindow()
+            focusRequester.requestFocus()
+        }
+        .onFocusChanged { focusState ->
+            autofill?.run {
+                if (focusState.isFocused) {
+                    requestAutofillForNode(autofillNode)
+                } else {
+                    cancelAutofillForNode(autofillNode)
+                }
             }
         }
-    }
 }
 
 @Preview
