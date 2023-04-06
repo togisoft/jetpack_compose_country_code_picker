@@ -73,6 +73,7 @@ fun CountryCodePick() {
             if (!isPhoneNumber()) {
                 fullPhoneNumber.value = getFullPhoneNumber()
                 onlyPhoneNumber.value = getOnlyPhoneNumber()
+
             } else {
                 fullPhoneNumber.value = "Error"
                 onlyPhoneNumber.value = "Error"
