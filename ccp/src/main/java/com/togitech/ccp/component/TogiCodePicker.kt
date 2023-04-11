@@ -2,6 +2,7 @@ package com.togitech.ccp.component
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -22,12 +23,10 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.togitech.ccp.R
 import com.togitech.ccp.data.CountryData
@@ -46,6 +45,8 @@ fun TogiCodeDialog(
     pickedCountry: (CountryData) -> Unit,
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
+    textStyleDefault: TextStyle = TextStyle.Default,
+    backgroundColor: Color = MaterialTheme.colors.background,
 
     ) {
     val context = LocalContext.current
@@ -82,22 +83,26 @@ fun TogiCodeDialog(
             if (showCountryCode) {
                 Text(
                     text = isPickCountry.countryPhoneCode,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 6.dp),
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface
+                    style = textStyleDefault,
                 )
-                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null,
+                    tint = textStyleDefault.color
+                )
             }
             if (showCountryName) {
                 Text(
                     text = stringResource(id = getCountryName(isPickCountry.countryCode.lowercase())),
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(start = 6.dp),
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface
+                    style = textStyleDefault,
                 )
-                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = null,
+                    tint = textStyleDefault.color
+                )
             }
         }
 
@@ -112,7 +117,9 @@ fun TogiCodeDialog(
                     pickedCountry(countryItem)
                     isPickCountry = countryItem
                     isOpenDialog = false
-                }
+                },
+                textStyleDefault = textStyleDefault,
+                backgroundColor = backgroundColor,
             )
         }
     }
@@ -126,6 +133,8 @@ fun CountryDialog(
     onSelected: (item: CountryData) -> Unit,
     context: Context,
     dialogStatus: Boolean,
+    textStyleDefault: TextStyle = TextStyle.Default,
+    backgroundColor: Color = MaterialTheme.colors.background,
 ) {
     var searchValue by remember { mutableStateOf("") }
     if (!dialogStatus) searchValue = ""
@@ -134,23 +143,25 @@ fun CountryDialog(
         onDismissRequest = onDismissRequest,
         content = {
             Surface(
-                color = MaterialTheme.colors.onSurface,
+                color = textStyleDefault.color,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(25.dp))
             ) {
                 Scaffold { scaffold ->
                     scaffold.calculateBottomPadding()
-                    Column(modifier = Modifier.fillMaxSize()) {
+                    Column(modifier = Modifier
+                        .fillMaxSize()
+                        .background(backgroundColor)) {
                         SearchTextField(
                             value = searchValue, onValueChange = { searchValue = it },
-                            textColor = MaterialTheme.colors.onSurface,
-                            fontSize = 16.sp,
+                            textColor = textStyleDefault.color,
+                            fontSize = textStyleDefault.fontSize,
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.Filled.Search,
                                     contentDescription = "Search",
-                                    tint = MaterialTheme.colors.onSurface,
+                                    tint = textStyleDefault.color,
                                     modifier = Modifier.padding(horizontal = 3.dp)
                                 )
                             },
@@ -186,8 +197,8 @@ fun CountryDialog(
                                     Text(
                                         stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
                                         Modifier.padding(horizontal = 18.dp),
-                                        fontSize = 14.sp,
-                                        fontFamily = FontFamily.Serif,
+                                        style = textStyleDefault,
+                                        fontFamily = textStyleDefault.fontFamily
                                     )
                                 }
                             }

@@ -14,8 +14,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.compose.ui.platform.LocalTextInputService
 import com.togitech.ccp.component.*
 import com.togitech.togii.ui.theme.TogiiTheme
 
@@ -60,13 +63,46 @@ fun CountryCodePick() {
         val phoneNumber = rememberSaveable { mutableStateOf("") }
         val fullPhoneNumber = rememberSaveable { mutableStateOf("") }
         val onlyPhoneNumber = rememberSaveable { mutableStateOf("") }
+        val errorStatus = rememberSaveable { mutableStateOf(false) }
+        val liveErrorStatus = rememberSaveable { mutableStateOf(false) }
+        val keyboardController = LocalTextInputService.current
 
         TogiCountryCodePicker(
             text = phoneNumber.value,
             onValueChange = { phoneNumber.value = it },
             unfocusedBorderColor = MaterialTheme.colors.primary,
-            bottomStyle =false,
-            shape = RoundedCornerShape(24.dp)
+            bottomStyle = false,
+            shape = RoundedCornerShape(24.dp),
+            textStyleDefault = TextStyle(
+                fontWeight = FontWeight.Normal,
+                color = Color.Yellow,
+                fontSize = MaterialTheme.typography.body1.fontSize,
+            ),
+            textStyleHint = TextStyle(
+                fontWeight = FontWeight.Thin,
+                color = Color.Gray,
+                fontSize = MaterialTheme.typography.body1.fontSize,
+            ),
+            textStyleError = TextStyle(
+                fontWeight = FontWeight.Normal,
+                color = MaterialTheme.colors.error,
+                fontSize = MaterialTheme.typography.body1.fontSize,
+            ),
+            countryCodeStyle = TextStyle(
+                fontWeight = FontWeight.Bold,
+                color = Color.Yellow,
+                fontSize = MaterialTheme.typography.body1.fontSize,
+            ),
+            countryCodeDialogBackgroundColor = Color.DarkGray,
+            changeStatustoErrorIfError = errorStatus.value,
+            turnLiveErrorStatusOn = true,
+            liveErrorStatus = {
+                liveErrorStatus.value = it
+                if (!it) {
+                    errorStatus.value = false
+                    keyboardController?.hideSoftwareKeyboard()
+                }
+            },
         )
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = {
@@ -77,6 +113,7 @@ fun CountryCodePick() {
             } else {
                 fullPhoneNumber.value = "Error"
                 onlyPhoneNumber.value = "Error"
+                errorStatus.value = true
             }
         }) {
             Text(text = "Check")
@@ -84,12 +121,12 @@ fun CountryCodePick() {
 
         Text(
             text = "Full Phone Number: ${fullPhoneNumber.value}",
-            color = if (getErrorStatus()) Color.Red else Color.Green
+            color = if (getErrorStatus() && errorStatus.value) Color.Red else Color.Green
         )
 
         Text(
             text = "Only Phone Number: ${onlyPhoneNumber.value}",
-            color = if (getErrorStatus()) Color.Red else Color.Green
+            color = if (getErrorStatus() && errorStatus.value) Color.Red else Color.Green
         )
     }
 }
