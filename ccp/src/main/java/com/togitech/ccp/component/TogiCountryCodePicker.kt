@@ -162,7 +162,7 @@ fun getOnlyPhoneNumber(): String {
 }
 
 fun getErrorStatus(): Boolean {
-    return checkNumberState
+    return !checkNumberState
 }
 
 fun isPhoneNumber(): Boolean {

@@ -25,6 +25,7 @@ Languages:
 * Arabic
 * Russian
 * Dutch
+* Hindi
 
 For language support, you can translate the file below and send it to me.
 https://github.com/togisoft/jetpack_compose_country_code_picker/blob/master/ccp/src/main/res/values/strings.xml

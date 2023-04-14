@@ -29,10 +29,10 @@ fun checkPhoneNumber(phone: String, fullPhoneNumber: String, countryCode: String
                 fullPhoneNumber,
                 Phonenumber.PhoneNumber.CountryCodeSource.UNSPECIFIED.name
             )
-            !PhoneNumberUtil.getInstance().isValidNumberForRegion(number, countryCode.uppercase())
+            PhoneNumberUtil.getInstance().isValidNumberForRegion(number, countryCode.uppercase())
         } catch (ex: Exception) {
-            true
+            false
         }
     }
-    return true
+    return false
 }

@@ -46,7 +46,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun CountryCodePick() {
     Column(
@@ -65,15 +64,14 @@ fun CountryCodePick() {
             text = phoneNumber.value,
             onValueChange = { phoneNumber.value = it },
             unfocusedBorderColor = MaterialTheme.colors.primary,
-            bottomStyle =false,
+            bottomStyle = false,
             shape = RoundedCornerShape(24.dp)
         )
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = {
-            if (!isPhoneNumber()) {
+            if (isPhoneNumber()) {
                 fullPhoneNumber.value = getFullPhoneNumber()
                 onlyPhoneNumber.value = getOnlyPhoneNumber()
-
             } else {
                 fullPhoneNumber.value = "Error"
                 onlyPhoneNumber.value = "Error"
