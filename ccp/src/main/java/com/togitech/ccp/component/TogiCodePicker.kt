@@ -40,12 +40,16 @@ import com.togitech.ccp.utils.searchCountry
 @Composable
 fun TogiCodeDialog(
     modifier: Modifier = Modifier,
-    padding: Dp = 15.dp,
+    paddingStart: Dp = 12.dp,
+    paddingEnd: Dp = 0.dp,
     defaultSelectedCountry: CountryData = getLibCountries.first(),
     showCountryCode: Boolean = true,
     pickedCountry: (CountryData) -> Unit,
     showFlag: Boolean = true,
     showCountryName: Boolean = false,
+    fontWeight: FontWeight = FontWeight.Bold,
+    fontSize: TextUnit = 18.sp,
+    fontColor: Color = MaterialTheme.colors.onSurface,
 
     ) {
     val context = LocalContext.current
@@ -58,7 +62,7 @@ fun TogiCodeDialog(
     val interactionSource = remember { MutableInteractionSource() }
 
     Column(modifier = modifier
-        .padding(padding)
+        .padding(start = paddingStart, end = paddingEnd)
         .clickable(
             interactionSource = interactionSource,
             indication = null,
@@ -82,20 +86,20 @@ fun TogiCodeDialog(
             if (showCountryCode) {
                 Text(
                     text = isPickCountry.countryPhoneCode,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = fontWeight,
                     modifier = Modifier.padding(start = 6.dp),
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface
+                    fontSize = fontSize,
+                    color = fontColor,
                 )
                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
             }
             if (showCountryName) {
                 Text(
                     text = stringResource(id = getCountryName(isPickCountry.countryCode.lowercase())),
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = fontWeight,
                     modifier = Modifier.padding(start = 6.dp),
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colors.onSurface
+                    fontSize = fontSize,
+                    color = fontColor,
                 )
                 Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
             }
@@ -155,6 +159,7 @@ fun CountryDialog(
                                 )
                             },
                             modifier = Modifier
+                                .padding(top = 10.dp)
                                 .clip(RoundedCornerShape(50))
                                 .height(40.dp),
                         )
@@ -211,7 +216,7 @@ private fun SearchTextField(
     textColor: Color = Color.Black,
     onValueChange: (String) -> Unit,
     hint: String = stringResource(id = R.string.search),
-    fontSize: TextUnit = MaterialTheme.typography.body2.fontSize
+    fontSize: TextUnit = MaterialTheme.typography.body2.fontSize,
 ) {
     BasicTextField(modifier = modifier
         .fillMaxWidth()

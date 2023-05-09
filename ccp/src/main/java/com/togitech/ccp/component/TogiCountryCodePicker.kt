@@ -19,9 +19,12 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.togitech.ccp.R
 import com.togitech.ccp.data.utils.getDefaultLangCode
 import com.togitech.ccp.data.utils.getDefaultPhoneCode
@@ -48,7 +51,13 @@ fun TogiCountryCodePicker(
     focusedBorderColor: Color = MaterialTheme.colors.primary,
     unfocusedBorderColor: Color = MaterialTheme.colors.onSecondary,
     cursorColor: Color = MaterialTheme.colors.primary,
-    bottomStyle: Boolean = false
+    bottomStyle: Boolean = false,
+    codeFontWeight: FontWeight = FontWeight.Bold,
+    codeFontSize: TextUnit = 18.sp,
+    codeFontColor: Color = MaterialTheme.colors.onSurface,
+    phoneNumberFontWeight: FontWeight = FontWeight.Bold,
+    phoneNumberFontSize: TextUnit = 18.sp,
+    phoneNumberFontColor: Color = MaterialTheme.colors.onSurface,
 ) {
     val context = LocalContext.current
     var textFieldValue by rememberSaveable { mutableStateOf("") }
@@ -82,7 +91,10 @@ fun TogiCountryCodePicker(
                     defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
                     showCountryCode = showCountryCode,
                     showFlag = showCountryFlag,
-                    showCountryName = true
+                    showCountryName = true,
+                    fontWeight = codeFontWeight,
+                    fontSize = codeFontSize,
+                    fontColor = codeFontColor,
                 )
             }
             Row(
@@ -92,6 +104,11 @@ fun TogiCountryCodePicker(
                 OutlinedTextField(modifier = modifier.fillMaxWidth(),
                     shape = shape,
                     value = textFieldValue,
+                    textStyle = TextStyle(
+                        fontSize = phoneNumberFontSize,
+                        fontWeight = phoneNumberFontWeight,
+                        color = phoneNumberFontColor,
+                    ),
                     onValueChange = {
                         textFieldValue = it
                         if (text != it) {
@@ -124,7 +141,10 @@ fun TogiCountryCodePicker(
                                         },
                                         defaultSelectedCountry = getLibCountries.single { it.countryCode == defaultLang },
                                         showCountryCode = showCountryCode,
-                                        showFlag = showCountryFlag
+                                        showFlag = showCountryFlag,
+                                        fontWeight = codeFontWeight,
+                                        fontSize = codeFontSize,
+                                        fontColor = codeFontColor,
                                     )
                                 }
                             }
