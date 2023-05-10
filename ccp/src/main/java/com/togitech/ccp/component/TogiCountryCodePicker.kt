@@ -1,5 +1,6 @@
 package com.togitech.ccp.component
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -113,6 +114,7 @@ fun TogiCountryCodePicker(
                         textFieldValue = it
                         if (text != it) {
                             onValueChange(it)
+                            isPhoneNumber()
                         }
                     },
                     singleLine = true,
