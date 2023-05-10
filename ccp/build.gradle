@@ -54,8 +54,8 @@ dependencies {
 
     //noinspection GradleDependency
     implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.activity:activity-compose:$activity_compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
+    implementation 'androidx.activity:activity-compose:1.7.1'
+    implementation 'androidx.compose.material:material:1.4.3'
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.13.7'
 
