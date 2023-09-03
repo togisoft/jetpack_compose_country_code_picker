@@ -14,7 +14,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.togitech.ccp.component.*
 import com.togitech.togii.ui.theme.TogiiTheme
@@ -65,7 +67,13 @@ fun CountryCodePick() {
             onValueChange = { phoneNumber.value = it },
             unfocusedBorderColor = MaterialTheme.colors.primary,
             bottomStyle = false,
-            shape = RoundedCornerShape(24.dp)
+            shape = RoundedCornerShape(24.dp),
+            codeFontColor = Color.Black,
+            codeFontSize = 18.sp,
+            codeFontWeight = FontWeight.SemiBold,
+            phoneNumberFontColor = Color.Black,
+            phoneNumberFontSize = 18.sp,
+            phoneNumberFontWeight = FontWeight.SemiBold,
         )
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = {

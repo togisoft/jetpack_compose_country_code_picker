@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unkown">Inconnue</string>
+    <string name="search">Recherche…</string>
+    <string name="select_country">Choisissez le pays</string>
+    <string name="invalid_number">Numéro de téléphone invalide</string>
+</resources>
